@@ -1,11 +1,11 @@
-name: ci
+name: Node.js CI
 
 on:
   pull_request:
     branches: ['main', 'develop']
 
 jobs:
-  ci:
+  build-and-test:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -28,6 +28,9 @@ jobs:
 
       - name: Run code style check
         run: npm run style:all
+
+      - name: Build
+        run: npm run build
 
       - name: Run test
         run: npm run test:unit
