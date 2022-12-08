@@ -10,7 +10,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "style:lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "style:prettier": "prettier --check . --ignore-path .gitignore",
-    "style:make-pretty": "prettier .  --write --ignore-path .gitignore",
+    "git": "prettier .  --write --ignore-path .gitignore",
     "style:all": "npm run type-check && npm run style:lint && npm run style:prettier"
   },
   "dependencies": {
@@ -34,7 +34,7 @@
     "jsdom": "^20.0.1",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.19",
-    "prettier": "2.7.1",
+    "prettier": "2.8.0",
     "tailwindcss": "^3.2.4",
     "typescript": "~4.7.4",
     "vite": "^3.1.8",
