@@ -1,39 +1,36 @@
-<script lang="ts">
-export default {
-  name: 'BookCard',
-  props: {
-    book: {
-      type: Object,
-      required: true,
-    },
-  },
-  computed: {
-    voteRatio() {
-      return Math.round(
-        (this.book.like / (this.book.like + this.book.dislike)) * 100
-      );
-    },
-    readableLike() {
-      return this.book.like.toLocaleString('en-US', {
-        notation: 'compact',
-        compactDisplay: 'short',
-      });
-    },
-    readableDislike() {
-      return this.book.dislike.toLocaleString('en-US', {
-        notation: 'compact',
-        compactDisplay: 'short',
-      });
-    },
-    release() {
-      return new Date(this.book.release).toLocaleDateString('fr-CH', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-      });
-    },
-  },
-};
+<script setup lang="ts">
+import { computed, defineProps } from 'vue';
+import type Book from '@/models/book';
+
+const props = defineProps<{
+  book: Book;
+}>();
+
+const voteRatio = computed(() =>
+  Math.round((props.book.upvote / (props.book.upvote + props.book.downvote)) * 100)
+);
+
+const readableLike = computed(() =>
+  props.book.upvote.toLocaleString('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
+);
+
+const readableDislike = computed(() =>
+  props.book.upvote.toLocaleString('en-US', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  })
+);
+
+const releaseDate = computed(() =>
+  new Date(props.book.release).toLocaleDateString('fr-CH', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
+);
 </script>
 
 <template>
@@ -62,7 +59,7 @@ export default {
     <!-- Info -->
     <div class="z-20 px-4 py-8 bg-white rounded">
       <h2 class="font-bold">{{ book.title }}</h2>
-      <p class="text-sm text-gray-500">{{ release }}</p>
+      <p class="text-sm text-gray-500">{{ releaseDate }}</p>
     </div>
   </RouterLink>
 </template>

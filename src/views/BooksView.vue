@@ -1,31 +1,21 @@
-<script lang="ts">
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import BookCard from '@/components/BookCard.vue';
+import Book from '@/models/book';
 
-export default {
-  name: 'BooksView',
-  components: {
-    BookCard,
-  },
-  data() {
-    return {
-      books: [
-        { id: 1, title: 'Book 1', like: 8, dislike: 2, release: '2022-01-01' },
-        { id: 2, title: 'Book 2', like: 2, dislike: 8, release: '2022-02-02' },
-        { id: 3, title: 'Book 3', like: 10, dislike: 10, release: '2022-03-03' },
-        { id: 4, title: 'Book 4', like: 1000, dislike: 300000, release: '2022-04-04' },
-        { id: 5, title: 'Book 5', like: 1000000, dislike: 20000, release: '2022-05-05' },
-      ],
-      search: '' as string,
-    };
-  },
-  computed: {
-    filteredBooks() {
-      return this.books.filter((book) =>
-        book.title.toLowerCase().includes(this.search.trim().toLowerCase())
-      );
-    },
-  },
-};
+const books = [
+  new Book('1', 'Book 1', '2022-01-01', 8, 2),
+  new Book('2', 'Book 2', '2022-02-02', 2, 8),
+  new Book('3', 'Book 3', '2022-03-03', 10, 10),
+  new Book('4', 'Book 4', '2022-04-04', 1000, 300000),
+  new Book('5', 'Book 5', '2022-05-05', 1000000, 20000),
+];
+
+const search = ref('');
+
+const filteredBooks = computed(() =>
+  books.filter((book) => book.title.trim().toLowerCase().includes(search.value.trim().toLowerCase()))
+);
 </script>
 
 <template>
