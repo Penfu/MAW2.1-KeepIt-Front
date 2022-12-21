@@ -1,21 +1,30 @@
-<script setup lang="ts">
-import { computed, ref } from 'vue';
+<script lang="ts">
 import BookCard from '@/components/BookCard.vue';
 import Book from '@/models/book';
 
-const books = [
-  new Book('1', 'Book 1', '2022-01-01', 8, 2),
-  new Book('2', 'Book 2', '2022-02-02', 2, 8),
-  new Book('3', 'Book 3', '2022-03-03', 10, 10),
-  new Book('4', 'Book 4', '2022-04-04', 1000, 300000),
-  new Book('5', 'Book 5', '2022-05-05', 1000000, 20000),
-];
-
-const search = ref('');
-
-const filteredBooks = computed(() =>
-  books.filter((book) => book.title.trim().toLowerCase().includes(search.value.trim().toLowerCase()))
-);
+export default{
+  name: 'BooksView',
+  components: {
+    BookCard,
+  },
+  data() {
+    return {
+      books: [
+        new Book('1', 'Book 1', '2022-01-01', 8, 2),
+        new Book('2', 'Book 2', '2022-02-02', 2, 8),
+        new Book('3', 'Book 3', '2022-03-03', 10, 10),
+        new Book('4', 'Book 4', '2022-04-04', 1000, 300000),
+        new Book('5', 'Book 5', '2022-05-05', 1000000, 20000),
+      ],
+      search: '',
+    };
+  },
+  computed: {
+    filteredBooks() {
+      return this.books.filter((book) => book.title.trim().toLowerCase().includes(this.search.trim().toLowerCase()));
+    },
+  },
+}
 </script>
 
 <template>
