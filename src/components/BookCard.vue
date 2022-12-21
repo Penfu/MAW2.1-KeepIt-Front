@@ -7,25 +7,25 @@ const props = defineProps<{
 }>();
 
 const voteRatio = computed(() =>
-  Math.round((props.book.upvote / (props.book.upvote + props.book.downvote)) * 100)
+  Math.round((props.book.upvotes / (props.book.upvotes + props.book.downvotes)) * 100)
 );
 
 const readableLike = computed(() =>
-  props.book.upvote.toLocaleString('en-US', {
+  props.book.upvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
 );
 
 const readableDislike = computed(() =>
-  props.book.upvote.toLocaleString('en-US', {
+  props.book.upvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
 );
 
 const releaseDate = computed(() =>
-  new Date(props.book.release).toLocaleDateString('fr-CH', {
+  new Date(props.book.published_at).toLocaleDateString('fr-CH', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
