@@ -4,7 +4,7 @@ import axios from 'axios';
 export default class BookProvider {
   static async fetchBooks(max: number = 10, offset: number = 0): Promise<Book[]> {
     try {
-      const response = await axios.get('http://192.168.135.33:3000/books?max=' + max + '&offset=' + offset);
+      const response = await axios.get('/books?max=' + max + '&offset=' + offset);
       return response.data;
     } catch (error) {
       console.error(error);
