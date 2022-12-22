@@ -11,7 +11,7 @@ export default {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl">
+  <div class="max-h-screen overflow-y-hidden mx-auto max-w-7xl">
     <header class="py-4">
       <div>
         <nav class="flex space-x-4">

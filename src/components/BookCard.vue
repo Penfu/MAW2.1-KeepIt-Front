@@ -10,14 +10,14 @@ const voteRatio = computed(() =>
   Math.round((props.book.upvotes / (props.book.upvotes + props.book.downvotes)) * 100)
 );
 
-const readableLike = computed(() =>
+const readableUpvotes = computed(() =>
   props.book.upvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
 );
 
-const readableDislike = computed(() =>
+const readableDownvotes = computed(() =>
   props.book.downvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
@@ -50,7 +50,7 @@ const releaseDate = computed(() =>
         <div class="mx-auto overflow-hidden">
           <span class="group-hover:hidden">{{ voteRatio }}%</span>
           <span class="hidden group-hover:block">
-            {{ readableLike }}👍 {{ readableDislike }}👎
+            {{ readableUpvotes }}👍 {{ readableDownvotes }}👎
           </span>
         </div>
       </div>
