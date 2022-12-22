@@ -18,7 +18,7 @@ const readableLike = computed(() =>
 );
 
 const readableDislike = computed(() =>
-  props.book.upvotes.toLocaleString('en-US', {
+  props.book.downvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
