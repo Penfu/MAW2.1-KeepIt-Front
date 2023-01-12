@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useInfiniteScroll } from '@vueuse/core';
 
 import debounce from 'debounce';
@@ -14,9 +14,9 @@ const search = ref('');
 const offset = ref(0 as number);
 const hasMore = ref(true as boolean);
 
-const el = ref<HTMLElement>()
+const el = ref<HTMLElement>();
 
-const debouncedSearch = debounce(async() => {
+const debouncedSearch = debounce(async function () {
   console.log('Searching for books: ' + search.value);
 
   offset.value = 0;
@@ -30,20 +30,24 @@ onMounted(async () => {
 
 useInfiniteScroll(
   el,
-   async () => {
+  async () => {
     if (!hasMore.value) {
       return;
     }
 
     console.log('Fetching more books... Offset: ' + offset.value);
     offset.value += 12;
-    const newBooks = await BookProvider.fetchBooks(search.value, 12, offset.value);
+    const newBooks = await BookProvider.fetchBooks(
+      search.value,
+      12,
+      offset.value
+    );
     books.value.push(...newBooks);
 
     hasMore.value = newBooks.length > 0;
   },
   { distance: 10 }
-)
+);
 </script>
 
 <template>
@@ -55,15 +59,22 @@ useInfiniteScroll(
 
       <!-- Search bar -->
       <div class="m-2 flex items-center bg-gray-100 rounded shadow drop-shadow">
-        <input v-model="search" v-on:input="debouncedSearch" type="text" class="grow py-3 px-4 rounded-lg outline-none text-lg"
-          placeholder="Search for a book..." />
+        <input
+          v-model="search"
+          v-on:input="debouncedSearch"
+          type="text"
+          class="grow py-3 px-4 rounded-lg outline-none text-lg"
+          placeholder="Search for a book..."
+        />
       </div>
     </div>
 
     <!-- Book cards -->
     <div class="h-full px-4 py-4 overflow-y-hidden">
-        <div ref="el"
-        class="h-full overflow-y-scroll py-4 grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 justify-items-center">
+      <div
+        ref="el"
+        class="h-full overflow-y-scroll py-4 grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 justify-items-center"
+      >
         <BookCard v-for="book in books" :key="book.id" :book="(book as Book)" />
       </div>
     </div>
