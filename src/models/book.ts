@@ -1,9 +1,15 @@
 export default class Book {
+  public subject: string;
+  public description: string;
+  public author: string;
+  public language: string;
+  public numberOfPages: number;
+
   constructor(
     private _id: string,
     private _title: string,
     private _cover: string,
-    private _published_at: string,
+    private _publishedAt: string,
     private _upvotes: number,
     private _downvotes: number
   ) {}
@@ -20,8 +26,8 @@ export default class Book {
     return this._cover;
   }
 
-  get published_at(): string {
-    return this._published_at;
+  get publishedAt(): string {
+    return this._publishedAt;
   }
 
   get upvotes(): number {
@@ -39,7 +45,7 @@ export default class Book {
   }
 
   static fromJson(json: any): Book {
-    return new Book(
+    const book = new Book(
       json.id,
       json.title,
       json.cover,
@@ -47,5 +53,13 @@ export default class Book {
       json.upvotes,
       json.downvotes
     );
+
+    book.subject = json.subject;
+    book.description = json.description;
+    book.author = json.author;
+    book.language = json.language;
+    book.numberOfPages = json.number_of_pages;
+
+    return book;
   }
 }

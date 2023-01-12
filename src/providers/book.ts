@@ -5,7 +5,7 @@ export default class BookProvider {
   static async fetchBook(id: string): Promise<Book> {
     try {
       const book = (await axios.get('/books/' + id)).data;
-      return Book.fromJson(book.data);
+      return Book.fromJson(book.data.item);
     } catch (error) {
       console.error(error);
       throw error;
