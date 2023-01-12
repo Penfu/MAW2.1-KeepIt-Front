@@ -1,13 +1,22 @@
-<script setup lang="ts">
+<script lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
+
+export default {
+  name: 'App',
+  components: {
+    RouterLink,
+    RouterView,
+  },
+};
 </script>
 
 <template>
-  <div>
-    <header>
+  <div class="max-h-screen overflow-y-hidden mx-auto max-w-7xl">
+    <header class="py-4">
       <div>
-        <nav>
+        <nav class="flex space-x-4">
           <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/books">Books</RouterLink>
         </nav>
       </div>
     </header>

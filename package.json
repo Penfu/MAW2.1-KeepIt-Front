@@ -14,12 +14,15 @@
     "style:all": "npm run type-check && npm run style:lint && npm run style:prettier"
   },
   "dependencies": {
+    "@vueuse/core": "^9.8.2",
+    "debounce": "^1.2.1",
     "pinia": "^2.0.23",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
+    "@types/debounce": "^1.2.1",
     "@types/jsdom": "^20.0.0",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.1.2",
