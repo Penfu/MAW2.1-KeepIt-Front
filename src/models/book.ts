@@ -2,6 +2,7 @@ export default class Book {
   constructor(
     private _id: string,
     private _title: string,
+    private _cover: string,
     private _published_at: string,
     private _upvotes: number,
     private _downvotes: number
@@ -13,6 +14,10 @@ export default class Book {
 
   get title(): string {
     return this._title;
+  }
+
+  get cover(): string {
+    return this._cover;
   }
 
   get published_at(): string {
@@ -37,6 +42,7 @@ export default class Book {
     return new Book(
       json._id,
       json.title,
+      json.cover,
       json.published_at,
       json.upvotes,
       json.downvotes
