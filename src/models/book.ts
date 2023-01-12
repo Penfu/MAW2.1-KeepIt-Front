@@ -40,7 +40,7 @@ export default class Book {
 
   static fromJson(json: any): Book {
     return new Book(
-      json._id,
+      json.id,
       json.title,
       json.cover,
       json.published_at,

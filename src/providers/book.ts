@@ -2,6 +2,16 @@ import Book from '@/models/book';
 import axios from 'axios';
 
 export default class BookProvider {
+  static async fetchBook(id: string): Promise<Book> {
+    try {
+      const book = (await axios.get('/books/' + id)).data;
+      return Book.fromJson(book.data);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   static async fetchBooks(
     title: string = '',
     max: number = 10,

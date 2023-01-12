@@ -46,7 +46,7 @@ useInfiniteScroll(
 
     hasMore.value = newBooks.length > 0;
   },
-  { distance: 10 }
+  { distance: 500 }
 );
 </script>
 
