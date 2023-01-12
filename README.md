@@ -1,6 +1,14 @@
 # KeepIt
 
-This template should help get you started developing with Vue 3 in Vite.
+## Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root of the project based on `.env-example` and add the following variables:
+
+```sh
+VITE_API=<YOUR_API_URL>
+```
 
 ## Recommended IDE Setup
 

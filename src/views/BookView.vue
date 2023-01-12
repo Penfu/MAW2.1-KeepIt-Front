@@ -1,5 +1,5 @@
 <script lang="ts">
-export default{
+export default {
   name: 'BookView',
   props: {
     id: {
@@ -15,9 +15,6 @@ export default{
 };
 </script>
 
-
 <template>
-  <div>
-    "Book View" {{ id }}
-  </div>
+  <div>"Book View" {{ id }}</div>
 </template>
