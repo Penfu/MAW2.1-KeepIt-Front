@@ -27,7 +27,7 @@ const readableDownvotes = computed(() =>
 );
 
 const releaseDate = computed(() =>
-  new Date(props.book.published_at).toLocaleDateString('fr-CH', {
+  new Date(props.book.publishedAt).toLocaleDateString('fr-CH', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
