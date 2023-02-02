@@ -22,7 +22,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div class="overflow-auto" style="max-height: calc(100vh - 50px)">
     <div v-if="isLoading" class="flex-grow flex justify-center items-center">
       <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-800">
       </div>
