@@ -1,9 +1,9 @@
 export default class Book {
-  public subject: string;
-  public description: string;
-  public author: string;
-  public language: string;
-  public numberOfPages: number;
+  public subjects!: string[];
+  public description!: string;
+  public authors!: string[];
+  public language!: string;
+  public numberOfPages!: number;
 
   constructor(
     private _id: string,
@@ -53,13 +53,13 @@ export default class Book {
       json.upvotes,
       json.downvotes
     );
-
-    book.subject = json.subject;
+    
+    book.subjects = json.subjects;
     book.description = json.description;
-    book.author = json.author;
+    book.authors = json.authors;
     book.language = json.language;
     book.numberOfPages = json.number_of_pages;
-
+    
     return book;
   }
 }
