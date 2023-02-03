@@ -51,7 +51,7 @@ useInfiniteScroll(
 </script>
 
 <template>
-  <main class="h-screen flex flex-col space-y-8">
+  <main style="max-height: calc(100vh - 56px)" class="h-screen flex flex-col gap-4">
     <div class="flex items-center">
       <div class="grow">
         <h1 class="text-xl font-semibold">Books</h1>
@@ -70,7 +70,7 @@ useInfiniteScroll(
     </div>
 
     <!-- Book cards -->
-    <div class="h-full px-4 py-4 overflow-y-hidden">
+    <div class="h-full px-4 overflow-y-hidden">
       <div
         ref="el"
         class="h-full overflow-y-scroll py-4 grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 justify-items-center"

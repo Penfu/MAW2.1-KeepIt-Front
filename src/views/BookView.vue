@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import BookProvider from '@/providers/book';
-import type Book from '@/models/book';
 import { computed, onMounted, ref } from 'vue';
 
+import BookProvider from '@/providers/book';
+import type Book from '@/models/book';
+
 const props = defineProps<{ id: string }>();
+
 const book = ref({} as Book);
 const isLoading = ref(true);
-
 
 const voteRatio = computed(() =>
   Math.round(
@@ -22,57 +23,59 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="overflow-auto" style="max-height: calc(100vh - 50px)">
-    <div v-if="isLoading" class="flex-grow flex justify-center items-center">
+  <div class="my-12">
+    <div v-if="isLoading" class="flex justify-center items-center">
       <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-800">
       </div>
     </div>
-    <div v-else class="sm:inline-flex m-2 space-x-4">
-      <!-- cover -->
-      <div class="flex-1 basis-32 place-content-center grow-0">
-        <img :src="book.cover" alt="Book cover" />
-      </div>
-
+    <div v-else>
       <!-- Book details  -->
-      <div class="flex-1 basis-1/2 place-content-start">
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ book.title }}</h1>
-        <p class="text-sm text-gray-500">
-          <span v-for="(author, index) in book.authors" :key="index">
-            {{ author }}
-            <template v-if="index < book.authors.length - 1">,</template>
-          </span>
-        </p>
-        <p class="text-sm text-gray-500">{{ book.publishedAt }}</p>
-        <p class="text-sm text-gray-500">
-          <span v-for="(subject, index) in book.subjects" :key="index">
-            {{ subject }}
-            <template v-if="index < book.subjects.length - 1">,</template>
-          </span>
-        </p>
-        <div class="mt-10">
-          <!-- Description -->
-          <div>
-            <div class="space-y-6">
-              <p class="text-base text-gray-900" v-html="book.description"></p>
+      <div class="flex flex-col gap-12">
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- cover -->
+          <div class="w-64 md:w-32">
+            <img :src="book.cover" alt="Book cover" class="rounded"/>
+          </div>
+
+          <!-- Title, authors, publishedAt, subjects -->
+          <div class="flex flex-col justify-between space-y-2">
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ book.title }}</h1>
+
+            <div class="space-y-2">
+              <p class="text-sm text-gray-500">
+                <span v-for="(author, index) in book.authors" :key="index">
+                  {{ author }}
+                  <template v-if="index < book.authors.length - 1">,</template>
+                </span>
+              </p>
+              <p class="text-sm text-gray-500">{{ book.publishedAt }}</p>
+              <p class="flex flex-col md:flex-row gap-2 text-sm text-white">
+                <span v-for="(subject, index) in book.subjects" :key="index" class="px-2 py-1 w-fit bg-gray-700 rounded-lg">
+                  {{ subject }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Vote -->
+          <div class="grow flex justify-center md:justify-end items-center">
+              <div class="flex flex-row md:flex-col gap-4 items-center">
+                <span class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
+                  👍
+                </span>
+                <span class="px-2 py-3 border-2 border-gray-700 rounded-lg">
+                  {{ voteRatio }}%
+                </span>
+                <span class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
+                  👎
+                </span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Vote -->
-      <div class="flex-1 place-content-center grow-0">
-        <div class="group mx-2 p-2 w-15 h-10">
-          <div>
-            <span class="bg-gray-800 text-white rounded cursor-default">
-              👍
-            </span>
-            <span>
-              {{ voteRatio }}%
-            </span>
-            <span class="bg-gray-800 text-white rounded cursor-default">
-              👎
-            </span>
-          </div>
+        <!-- Description -->
+        <div class="space-y-6">
+          <p class="text-base text-gray-900" v-html="book.description"></p>
         </div>
       </div>
     </div>
