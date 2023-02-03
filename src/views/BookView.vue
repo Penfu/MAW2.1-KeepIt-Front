@@ -20,6 +20,14 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
+const handleUpVote = () => {
+  BookProvider.upVote(props.id);
+}
+
+const handleDownVote = () => {
+  BookProvider.downVote(props.id);
+}
+
 </script>
 
 <template>
@@ -34,7 +42,7 @@ onMounted(async () => {
         <div class="flex flex-col md:flex-row gap-8">
           <!-- cover -->
           <div class="w-64 md:w-32">
-            <img :src="book.cover" alt="Book cover" class="rounded"/>
+            <img :src="book.cover" alt="Book cover" class="rounded" />
           </div>
 
           <!-- Title, authors, publishedAt, subjects -->
@@ -50,7 +58,8 @@ onMounted(async () => {
               </p>
               <p class="text-sm text-gray-500">{{ book.publishedAt }}</p>
               <p class="flex flex-col md:flex-row gap-2 text-sm text-white">
-                <span v-for="(subject, index) in book.subjects" :key="index" class="px-2 py-1 w-fit bg-gray-700 rounded-lg">
+                <span v-for="(subject, index) in book.subjects" :key="index"
+                  class="px-2 py-1 w-fit bg-gray-700 rounded-lg">
                   {{ subject }}
                 </span>
               </p>
@@ -59,16 +68,18 @@ onMounted(async () => {
 
           <!-- Vote -->
           <div class="grow flex justify-center md:justify-end items-center">
-              <div class="flex flex-row md:flex-col gap-4 items-center">
-                <span class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
-                  👍
-                </span>
-                <span class="px-2 py-3 border-2 border-gray-700 rounded-lg">
-                  {{ voteRatio }}%
-                </span>
-                <span class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
-                  👎
-                </span>
+            <div class="flex flex-row md:flex-col gap-4 items-center">
+              <button @click="handleUpVote()"
+                class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
+                👍
+              </button>
+              <span class="px-2 py-3 border-2 border-gray-700 rounded-lg">
+                {{ voteRatio }}%
+              </span>
+              <button @click="handleDownVote()"
+                class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
+                👎
+              </button>
             </div>
           </div>
         </div>

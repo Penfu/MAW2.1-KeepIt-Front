@@ -12,7 +12,7 @@ export default class Book {
     private _publishedAt: string,
     private _upvotes: number,
     private _downvotes: number
-  ) {}
+  ) { }
 
   get id(): string {
     return this._id;
