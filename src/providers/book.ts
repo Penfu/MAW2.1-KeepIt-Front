@@ -54,4 +54,14 @@ export default class BookProvider {
       throw error;
     }
   }
+
+  static async unVote(id: string = ''): Promise<void> {
+    try {
+      const response = await axios.delete(`/books/${id}/unvote`);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }

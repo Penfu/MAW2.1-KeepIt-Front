@@ -21,11 +21,42 @@ onMounted(async () => {
 });
 
 const handleUpVote = () => {
+  if (book.value.userVote === 1) {
+    handleUnVote();
+    book.value.upvotes--;
+    return;
+  }
+
   BookProvider.upVote(props.id);
+  book.value.upvotes++;
+
+  if (book.value.userVote === -1) {
+    book.value.downvotes--;
+  }
+
+  book.value.userVote = 1;
 }
 
 const handleDownVote = () => {
+  if (book.value.userVote === -1) {
+    handleUnVote();
+    book.value.downvotes--;
+    return;
+  }
+
   BookProvider.downVote(props.id);
+  book.value.downvotes++;
+
+  if (book.value.userVote === 1) {
+    book.value.upvotes--;
+  }
+
+  book.value.userVote = -1;
+}
+
+const handleUnVote = () => {
+  BookProvider.unVote(props.id);
+  book.value.userVote = 0;
 }
 
 </script>
@@ -69,15 +100,15 @@ const handleDownVote = () => {
           <!-- Vote -->
           <div class="grow flex justify-center md:justify-end items-center">
             <div class="flex flex-row md:flex-col gap-4 items-center">
-              <button @click="handleUpVote()"
-                class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
+              <button @click="handleUpVote()" class="w-12 h-12 rounded-lg text-white text-2xl shadow-md shadow-gray-300"
+                :class="[book.userVote === 1 ? 'bg-gray-700' : 'bg-gray-200 hover:bg-gray-300']">
                 👍
               </button>
-              <span class="px-2 py-3 border-2 border-gray-700 rounded-lg">
-                {{ voteRatio }}%
+              <span class="w-12 h-12 border-2 border-gray-700 rounded-lg align-middle flex justify-center items-center">
+                {{ isNaN(voteRatio) ?'~': `${voteRatio} %` }}
               </span>
-              <button @click="handleDownVote()"
-                class="p-2 bg-gray-700 hover:bg-gray-800 rounded-lg text-white text-2xl cursor-pointer">
+              <button @click="handleDownVote()" class="w-12 h-12 rounded-lg text-white text-2xl shadow-md shadow-gray-300"
+                :class="[book.userVote === -1 ? 'bg-gray-700' : 'bg-gray-200 hover:bg-gray-300']">
                 👎
               </button>
             </div>

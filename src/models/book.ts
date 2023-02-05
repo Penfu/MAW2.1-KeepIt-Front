@@ -4,6 +4,7 @@ export default class Book {
   public authors!: string[];
   public language!: string;
   public numberOfPages!: number;
+  public userVote: number = 0
 
   constructor(
     private _id: string,
@@ -11,7 +12,7 @@ export default class Book {
     private _cover: string,
     private _publishedAt: string,
     private _upvotes: number,
-    private _downvotes: number
+    private _downvotes: number,
   ) { }
 
   get id(): string {
@@ -59,6 +60,8 @@ export default class Book {
     book.authors = json.authors;
     book.language = json.language;
     book.numberOfPages = json.number_of_pages;
+    
+    book.userVote = json.user_vote;
     
     return book;
   }
