@@ -1,12 +1,19 @@
 export default class Book {
+  public subjects!: string[];
+  public description!: string;
+  public authors!: string[];
+  public language!: string;
+  public numberOfPages!: number;
+  public userVote: number = 0
+
   constructor(
     private _id: string,
     private _title: string,
     private _cover: string,
-    private _published_at: string,
+    private _publishedAt: string,
     private _upvotes: number,
-    private _downvotes: number
-  ) {}
+    private _downvotes: number,
+  ) { }
 
   get id(): string {
     return this._id;
@@ -20,8 +27,8 @@ export default class Book {
     return this._cover;
   }
 
-  get published_at(): string {
-    return this._published_at;
+  get publishedAt(): string {
+    return this._publishedAt;
   }
 
   get upvotes(): number {
@@ -39,13 +46,23 @@ export default class Book {
   }
 
   static fromJson(json: any): Book {
-    return new Book(
-      json._id,
+    const book = new Book(
+      json.id,
       json.title,
       json.cover,
       json.published_at,
       json.upvotes,
       json.downvotes
     );
+
+    book.subjects = json.subjects;
+    book.description = json.description;
+    book.authors = json.authors;
+    book.language = json.language;
+    book.numberOfPages = json.number_of_pages;
+
+    book.userVote = json.user_vote;
+
+    return book;
   }
 }
