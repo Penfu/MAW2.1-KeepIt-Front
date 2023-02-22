@@ -14,7 +14,9 @@
     "style:all": "npm run type-check && npm run style:lint && npm run style:prettier"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.9",
     "@vueuse/core": "^9.8.2",
+    "axios": "^1.3.2",
     "debounce": "^1.2.1",
     "pinia": "^2.0.23",
     "vue": "^3.2.41",

@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import debounce from 'debounce';
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/vue';
 
 import BookProvider from '@/providers/book';
 import type Book from '@/models/book';
@@ -59,6 +65,25 @@ const handleUnVote = () => {
   book.value.userVote = 0;
 }
 
+const readingProgress = computed(() => {
+  return Math.round((book.value.userPage / book.value.numberOfPages) * 100);
+});
+
+const isPageTrackOpen = ref(false)
+
+const onPageTrackInput = () => {
+  if (book.value.userPage < 0 || !book.value.userPage)
+    book.value.userPage = 0;
+  else if (book.value.userPage > book.value.numberOfPages)
+    book.value.userPage = book.value.numberOfPages;
+
+  debouncedUserPageTracking();
+}
+
+const debouncedUserPageTracking = debounce(async function () {
+  BookProvider.track(props.id, book.value.userPage);
+}, 1000);
+
 </script>
 
 <template>
@@ -88,6 +113,7 @@ const handleUnVote = () => {
                 </span>
               </p>
               <p class="text-sm text-gray-500">{{ book.publishedAt }}</p>
+              <p class="text-sm text-gray-500">{{ book.numberOfPages }} pages</p>
               <p class="flex flex-col md:flex-row gap-2 text-sm text-white">
                 <span v-for="(subject, index) in book.subjects" :key="index"
                   class="px-2 py-1 w-fit bg-gray-700 rounded-lg">
@@ -116,6 +142,42 @@ const handleUnVote = () => {
           </div>
         </div>
 
+        <!-- Progression -->
+        <div class="flex flex-col gap-2">
+          <!-- Progress Description -->
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-semibold">
+              <span>
+                You’re
+              </span>
+              <span class="text-blue-500 font-bold">
+                {{ readingProgress }}%
+              </span>
+              <span>
+                through the book.
+              </span>
+            </h3>
+
+            <button @click="isPageTrackOpen = true" class="p-2 bg-gray-700 text-white rounded-md">
+              Change my progression
+            </button>
+
+          </div>
+          <!-- Progress bar -->
+          <div class="h-6 rounded bg-gray-200">
+            <div :style="`width: ${readingProgress}%;`"
+              class="h-full flex justify-end bg-gray-700 rounded text-white transition-width duration-150">
+            </div>
+          </div>
+
+          <!-- Current page -->
+          <label>
+            {{ book.userPage }}
+            /
+            {{ book.numberOfPages }}
+          </label>
+        </div>
+
         <!-- Description -->
         <div class="space-y-6">
           <p class="text-base text-gray-900" v-html="book.description"></p>
@@ -123,4 +185,34 @@ const handleUnVote = () => {
       </div>
     </div>
   </div>
+
+  <!-- Update current user page modal -->
+  <Dialog :open="isPageTrackOpen" @close="isPageTrackOpen = false" class="relative z-50">
+    <!-- The backdrop, rendered as a fixed sibling to the panel container -->
+    <div class="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+    <!-- Full-screen container to center the panel -->
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+      <!-- The actual dialog panel -->
+      <DialogPanel class="p-4 w-full max-w-sm rounded-lg bg-white space-y-8 drop-shadow-md">
+        <DialogTitle class="text-xl font-bold">Set your current page</DialogTitle>
+
+        <div class="flex items-center gap-2">
+          <input type="number" v-model="book.userPage" @input="onPageTrackInput" :min="0" :max="book.numberOfPages"
+            class="p-2 w-full border-2 border-gray-200 rounded-md text-center" />
+          <label class="text-2xl">/</label>
+          <label class="p-2 w-full bg-gray-100 border-2 rounded-md text-center">
+            {{ book.numberOfPages }}
+          </label>
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <button @click="isPageTrackOpen = false"
+            class="py-2 px-4 bg-gray-700 hover:bg-gray-800 rounded-md text-white">
+            Close
+          </button>
+        </div>
+      </DialogPanel>
+    </div>
+  </Dialog>
 </template>

@@ -5,7 +5,6 @@ export default class BookProvider {
   static async fetchBook(id: string): Promise<Book> {
     try {
       const book = (await axios.get('/books/' + id)).data;
-      console.log(book);
       return Book.fromJson(book.data.item);
     } catch (error) {
       console.error(error);
@@ -37,8 +36,7 @@ export default class BookProvider {
 
   static async upVote(id: string = ''): Promise<void> {
     try {
-      const response = await axios.put(`/books/${id}/upvote`);
-      console.log(response);
+      await axios.put(`/books/${id}/upvote`);
     } catch (error) {
       console.error(error);
       throw error;
@@ -47,8 +45,7 @@ export default class BookProvider {
 
   static async downVote(id: string = ''): Promise<void> {
     try {
-      const response = await axios.put(`/books/${id}/downvote`);
-      console.log(response);
+      await axios.put(`/books/${id}/downvote`);
     } catch (error) {
       console.error(error);
       throw error;
@@ -57,8 +54,16 @@ export default class BookProvider {
 
   static async unVote(id: string = ''): Promise<void> {
     try {
-      const response = await axios.delete(`/books/${id}/unvote`);
-      console.log(response);
+      await axios.delete(`/books/${id}/unvote`);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  static async track(id: string = '', page: number): Promise<void> {
+    try {
+      await axios.put(`/books/${id}/track`, { page });
     } catch (error) {
       console.error(error);
       throw error;
