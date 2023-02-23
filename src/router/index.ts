@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import NotFoundViewVue from '@/views/NotFoundView.vue';
 
+import LoginView from '../views/LoginView.vue';
+
 import HomeView from '../views/HomeView.vue';
 import BooksView from '../views/BooksView.vue';
 import BookView from '../views/BookView.vue';
@@ -12,6 +14,11 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundViewVue,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
     },
     {
       path: '/',
