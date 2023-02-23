@@ -16,6 +16,11 @@ export const useAuthStore = defineStore('auth', () => {
   const loginErrors = ref<Error[]>([]);
   const registerErrors = ref<Error[]>([]);
 
+  // Auto-login if token is present in localStorage
+  if (localStorage.getItem("token")) {
+    token.value = localStorage.getItem("token");
+  }
+
   async function login(email: string, password: string): Promise<void> {
     try {
       const response = await axios.post('/login', {
