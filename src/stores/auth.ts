@@ -17,29 +17,41 @@ export const useAuthStore = defineStore('auth', () => {
   const registerErrors = ref<Error[]>([]);
 
   async function login(email: string, password: string): Promise<void> {
-    console.log('login');
+    try {
+      const response = await axios.post('/login', {
+        login: email,
+        password: password,
+      });
 
-    const response = await axios.post('/login', {
-      login: email,
-      password: password,
-    });
-
-    if (response.status !== 200) {
-      loginErrors.value = response.data;
+      token.value = response.headers['authorization'];
+      localStorage.setItem('token', response.data.token);
+    } catch (error) {
+      loginErrors.value = [{ $message: error.response.data }];
       return;
     }
-
-    token.value = response.headers['authorization'];
-    localStorage.setItem('token', response.data.token);
   }
 
-  async function register(email: string, password: string): Promise<void> {
-    console.log('register not implemented yet');
+  async function register(
+    email: string,
+    password: string,
+    password_confirm: string
+  ): Promise<void> {
+    try {
+      const response = await axios.post('/register', {
+        login: email,
+        password: password,
+        'password-confirm': password_confirm,
+      });
+
+      token.value = response.headers['authorization'];
+      localStorage.setItem('token', response.data.token);
+    } catch (error) {
+      registerErrors.value = [{ $message: error.response.data }];
+      return;
+    }
   }
 
   async function logout() {
-    console.log('logout');
-
     token.value = null;
     localStorage.removeItem('token');
   }

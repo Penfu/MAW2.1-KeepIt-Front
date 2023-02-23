@@ -11,7 +11,7 @@ defineProps<{
   <div
     v-for="(error, index) in errors"
     :key="index"
-    class="flex p-4 mb-4 text-red-600 rounded-lg bg-red-50"
+    class="flex p-4 text-red-600 rounded-lg bg-red-50"
     role="alert"
   >
     <svg
