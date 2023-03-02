@@ -17,6 +17,7 @@ export default {
         <nav class="flex space-x-4">
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/books">Books</RouterLink>
+          <RouterLink to="/movies">Movies</RouterLink>
         </nav>
       </div>
     </header>

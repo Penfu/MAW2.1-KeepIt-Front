@@ -3,31 +3,31 @@ import { computed, defineProps } from 'vue';
 import type Book from '@/models/book';
 
 const props = defineProps<{
-  book: Book;
+  media: Book;
 }>();
 
 const voteRatio = computed(() =>
   Math.round(
-    (props.book.upvotes / (props.book.upvotes + props.book.downvotes)) * 100
+    (props.media.upvotes / (props.media.upvotes + props.media.downvotes)) * 100
   )
 );
 
 const readableUpvotes = computed(() =>
-  props.book.upvotes.toLocaleString('en-US', {
+  props.media.upvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
 );
 
 const readableDownvotes = computed(() =>
-  props.book.downvotes.toLocaleString('en-US', {
+  props.media.downvotes.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
 );
 
 const releaseDate = computed(() =>
-  new Date(props.book.publishedAt).toLocaleDateString('fr-CH', {
+  new Date(props.media.publishedAt).toLocaleDateString('fr-CH', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -36,11 +36,11 @@ const releaseDate = computed(() =>
 </script>
 
 <template>
-  <RouterLink :to="'/books/' + book.id"
+  <RouterLink :to="'/books/' + media.id"
     class="flex flex-col h-80 w-56 bg-gray-100 rounded-xl shadow drop-shadow-lg hover:cursor-pointer hover:scale-105 transition ease-in-out">
     <!-- Cover -->
     <div class="grow h-48 rounded-t-xl">
-      <img :src="book.cover || '/assets/placeholder.png'" class="h-full w-full object-cover rounded-t-xl"
+      <img :src="media.cover || '/assets/placeholder.png'" class="h-full w-full object-cover rounded-t-xl"
         alt="Book cover" />
     </div>
 
@@ -60,7 +60,7 @@ const releaseDate = computed(() =>
     <!-- Info -->
     <div class="z-20 px-4 pt-8 pb-4 h-32 bg-white rounded flex flex-col space-y-2">
       <h2 class="relative group grow text-ellipsis overflow-hidden font-bold">
-        {{ book.title }}
+        {{ media.title }}
       </h2>
       <p class="text-sm text-gray-500">
         {{ releaseDate }}

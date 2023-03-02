@@ -2,9 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import NotFoundViewVue from '@/views/NotFoundView.vue';
 
-import HomeView from '../views/HomeView.vue';
-import BooksView from '../views/BooksView.vue';
-import BookView from '../views/BookView.vue';
+import HomeView from '@/views/HomeView.vue';
+import BooksView from '@/views/BooksView.vue';
+import BookView from '@/views/BookView.vue';
+import MovieView from '@/views/MovieView.vue';
+import MoviesView from '@/views/MoviesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +31,17 @@ const router = createRouter({
       component: BookView,
       props: true,
     },
+    {
+      path: '/movies',
+      name: 'movies',
+      component: MoviesView,
+    },
+    {
+      path: '/movies/:id',
+      name: 'movie',
+      component: MovieView,
+      props: true,
+    }
   ],
 });
 
