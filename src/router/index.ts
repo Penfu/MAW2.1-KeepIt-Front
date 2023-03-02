@@ -2,9 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import NotFoundViewVue from '@/views/NotFoundView.vue';
 
-import HomeView from '../views/HomeView.vue';
-import BooksView from '../views/BooksView.vue';
-import BookView from '../views/BookView.vue';
+import LoginView from '@/views/LoginView.vue';
+import RegisterView from '@/views/RegisterView.vue';
+
+import HomeView from '@/views/HomeView.vue';
+import BooksView from '@/views/BooksView.vue';
+import BookView from '@/views/BookView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +15,16 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)*',
       component: NotFoundViewVue,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterView,
     },
     {
       path: '/',

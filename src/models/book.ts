@@ -14,8 +14,8 @@ export default class Book {
     private _cover: string,
     private _publishedAt: string,
     private _upvotes: number,
-    private _downvotes: number,
-  ) { }
+    private _downvotes: number
+  ) {}
 
   get id(): string {
     return this._id;
@@ -65,7 +65,7 @@ export default class Book {
 
     book.userVote = json.user_vote;
     book.userPage = json.user_page;
-    
+
     return book;
   }
 }
