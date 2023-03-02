@@ -14,7 +14,6 @@ const search = ref('');
 const offset = ref(0 as number);
 const hasMore = ref(true as boolean);
 
-
 const debouncedSearch = debounce(async function () {
   console.log('Searching for books: ' + search.value);
 
@@ -38,7 +37,7 @@ const infiniteScroll = async () => {
   books.value.push(...newBooks);
 
   hasMore.value = newBooks.length > 0;
-}
+};
 
 onMounted(async () => {
   books.value = await BookProvider.fetchBooks(search.value, 12, offset.value);
@@ -46,7 +45,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main style="max-height: calc(100vh - 56px)" class="h-screen flex flex-col gap-4">
+  <main
+    style="max-height: calc(100vh - 56px)"
+    class="h-screen flex flex-col gap-4"
+  >
     <div class="flex items-center">
       <div class="grow">
         <h1 class="text-xl font-semibold">Movies</h1>
@@ -54,13 +56,21 @@ onMounted(async () => {
 
       <!-- Search bar -->
       <div class="m-2 flex items-center bg-gray-100 rounded shadow drop-shadow">
-        <input v-model="search" v-on:input="debouncedSearch" type="text"
-          class="grow py-3 px-4 rounded-lg outline-none text-lg" placeholder="Search for a book..." />
+        <input
+          v-model="search"
+          v-on:input="debouncedSearch"
+          type="text"
+          class="grow py-3 px-4 rounded-lg outline-none text-lg"
+          placeholder="Search for a book..."
+        />
       </div>
     </div>
 
     <!-- Movies cards -->
-    <MediaList :scroll="infiniteScroll" :medias="(books as Book[])" :mediaCard="MovieCard" />
-
+    <MediaList
+      :scroll-event="infiniteScroll"
+      :medias="(books as Book[])"
+      :mediaCard="MovieCard"
+    />
   </main>
 </template>
