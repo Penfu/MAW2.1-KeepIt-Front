@@ -51,23 +51,33 @@ useInfiniteScroll(
 </script>
 
 <template>
-  <main style="max-height: calc(100vh - 56px)" class="h-screen flex flex-col gap-4">
+  <main
+    style="max-height: calc(100vh - var(--h-navbar))"
+    class="pt-8 h-screen flex flex-col gap-4"
+  >
     <div class="flex items-center">
       <div class="grow">
         <h1 class="text-xl font-semibold">Books</h1>
       </div>
 
       <!-- Search bar -->
-      <div class="m-2 flex items-center bg-gray-100 rounded shadow drop-shadow">
-        <input v-model="search" v-on:input="debouncedSearch" type="text"
-          class="grow py-3 px-4 rounded-lg outline-none text-lg" placeholder="Search for a book..." />
+      <div class="m-2 flex items-center bg-gray-100 rounded shadow">
+        <input
+          v-model="search"
+          v-on:input="debouncedSearch"
+          type="text"
+          class="grow py-3 px-4 rounded-lg outline-none text-lg"
+          placeholder="Search for a book..."
+        />
       </div>
     </div>
 
     <!-- Book cards -->
     <div class="h-full px-4 overflow-y-hidden">
-      <div ref="el"
-        class="h-full overflow-y-scroll py-4 grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 justify-items-center">
+      <div
+        ref="el"
+        class="h-full overflow-y-auto py-4 grid grid-cols sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 justify-items-center"
+      >
         <BookCard v-for="book in books" :key="book.id" :book="(book as Book)" />
       </div>
     </div>
