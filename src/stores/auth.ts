@@ -11,14 +11,25 @@ export const useAuthStore = defineStore('auth', () => {
     id: null as number | null,
   });
   const token = ref(null as string | null);
+  const refreshToken = ref(null as string | null);
   const isAuth = computed(() => token.value != null);
 
+  const message = ref<string>();
   const loginErrors = ref<Error[]>([]);
   const registerErrors = ref<Error[]>([]);
 
   // Auto-login if token is present in localStorage
   if (localStorage.getItem("token")) {
     token.value = localStorage.getItem("token");
+  }
+
+  function cleanErrors() {
+    loginErrors.value = [];
+    registerErrors.value = [];
+  }
+
+  function cleanMessage() {
+    message.value = "";
   }
 
   async function login(email: string, password: string): Promise<void> {
@@ -28,10 +39,13 @@ export const useAuthStore = defineStore('auth', () => {
         password: password,
       });
 
-      token.value = response.headers['authorization'];
-      localStorage.setItem('token', response.data.token);
+      token.value = response.data["access_token"];
+      refreshToken.value = response.data["refresh_token"];
+      localStorage.setItem('token', token.value as string);
+      localStorage.setItem('refresh_token', refreshToken.value as string);
     } catch (error) {
-      loginErrors.value = [{ $message: error.response.data }];
+      console.log(error.response.data["field-error"]);
+      loginErrors.value = [{ $message: error.response.data["field-error"][1] }];
       return;
     }
   }
@@ -48,10 +62,16 @@ export const useAuthStore = defineStore('auth', () => {
         'password-confirm': password_confirm,
       });
 
-      token.value = response.headers['authorization'];
-      localStorage.setItem('token', response.data.token);
+      token.value = response.data["access_token"];
+      refreshToken.value = response.data["refresh_token"];
+      localStorage.setItem('token', token.value as string);
+      localStorage.setItem('refresh_token', refreshToken.value as string);
+
+      message.value = "You have successfully registered!";
+
+      cleanErrors();
     } catch (error) {
-      registerErrors.value = [{ $message: error.response.data }];
+      registerErrors.value = [{ $message: error.response.data["field-error"][1] }];
       return;
     }
   }
@@ -59,6 +79,9 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     token.value = null;
     localStorage.removeItem('token');
+
+    cleanMessage();
+    cleanErrors();
   }
 
   return {
@@ -69,6 +92,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     loginErrors,
     registerErrors,
+    message,
     Error,
   };
 });
