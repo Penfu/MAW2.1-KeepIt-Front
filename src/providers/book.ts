@@ -23,10 +23,10 @@ export default class BookProvider {
         title == ''
           ? (await axios.get('/books?max=' + max + '&offset=' + offset)).data
           : (
-            await axios.get(
-              '/books/search?q=' + title + '&max=' + max + '&offset=' + offset
-            )
-          ).data;
+              await axios.get(
+                '/books/search?q=' + title + '&max=' + max + '&offset=' + offset
+              )
+            ).data;
 
       return books.data.items.map((book: JSON) => Book.fromJson(book));
     } catch (error) {
