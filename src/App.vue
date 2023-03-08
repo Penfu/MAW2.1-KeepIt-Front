@@ -63,7 +63,7 @@ const auth = useAuthStore();
         </div>
 
         <!-- Small Menu -->
-        <div class="md:hidden">
+        <div class="md:hidden z-20">
           <Dropdown>
             <template #trigger>
               <HamburgerIcon />
