@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 import type Book from '@/models/book';
 import BookProvider from '@/providers/book';
 
-import BookCard from '@/components/BookCard.vue';
+import BookCard from '@/components/media/BookCard.vue';
 
 const book = ref({} as Book);
 
@@ -23,7 +23,7 @@ onMounted(async () => {
         <h3 v-show="book.id">You can still read this book...</h3>
       </div>
 
-      <BookCard v-if="book.id" :book="(book as Book)" />
+      <BookCard v-if="book.id" :media="(book as Book)" />
       <div v-else class="h-80 w-56 bg-gray-100 rounded-xl animate-pulse"></div>
     </div>
   </main>
