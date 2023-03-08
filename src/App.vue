@@ -38,15 +38,15 @@ const auth = useAuthStore();
             </div>
 
             <!-- User Actions -->
-            <Dropdown class="relative">
+            <Dropdown v-if="auth.isAuth" class="relative">
               <template #trigger>
                 <ProfileIcon />
               </template>
               <template #content>
                 <div
-                  class="absolute w-44 right-0 mt-2 p-2 bg-white rounded-lg border border-gray-200 shadow-md"
+                  class="absolute z-20 w-44 right-0 mt-2 p-2 bg-white rounded-lg border border-gray-200 shadow-md"
                 >
-                  <div v-if="auth.isAuth" class="space-y-4">
+                  <div class="space-y-4">
                     <h4>Logged as user X</h4>
                     <button
                       @click="auth.logout()"
@@ -55,10 +55,10 @@ const auth = useAuthStore();
                       Logout
                     </button>
                   </div>
-                  <RouterLink v-else to="/login">Login</RouterLink>
                 </div>
               </template>
             </Dropdown>
+            <RouterLink v-else to="/login">Login</RouterLink>
           </div>
         </div>
 
