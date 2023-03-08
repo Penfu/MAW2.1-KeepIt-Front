@@ -58,7 +58,12 @@ const auth = useAuthStore();
                 </div>
               </template>
             </Dropdown>
-            <RouterLink v-else to="/login">Login</RouterLink>
+            <RouterLink
+              v-else
+              to="/login"
+              class="py-2 px-4 text-white font-bold bg-blue-500 hover:bg-blue-600 rounded shadow shadow-blue-300"
+              >Login</RouterLink
+            >
           </div>
         </div>
 
@@ -85,10 +90,10 @@ const auth = useAuthStore();
                     </RouterLink>
                   </div>
 
+                  <span class="mx-2 block border-t-2 border-gray-400"></span>
+
                   <!-- User Actions -->
-                  <div
-                    class="mx-2 flex flex-col gap-8 border-t-2 border-gray-600"
-                  >
+                  <div class="mx-2 flex flex-col gap-8">
                     <div v-if="auth.isAuth" class="flex flex-col space-y-4">
                       <span class="py-4">Logged as user X</span>
                       <button
@@ -98,7 +103,13 @@ const auth = useAuthStore();
                         Logout
                       </button>
                     </div>
-                    <RouterLink v-else to="/login">Login</RouterLink>
+
+                    <RouterLink
+                      v-else
+                      to="/login"
+                      class="py-3 px-4 text-white text-center text-lg font-bold uppercase bg-blue-500 hover:bg-blue-600 rounded shadow shadow-blue-300"
+                      >Login</RouterLink
+                    >
                   </div>
                 </div>
               </div>
