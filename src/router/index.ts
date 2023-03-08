@@ -6,8 +6,12 @@ import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 
 import HomeView from '@/views/HomeView.vue';
+
 import BooksView from '@/views/BooksView.vue';
 import BookView from '@/views/BookView.vue';
+
+import MovieView from '@/views/MovieView.vue';
+import MoviesView from '@/views/MoviesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +44,17 @@ const router = createRouter({
       path: '/books/:id',
       name: 'book',
       component: BookView,
+      props: true,
+    },
+    {
+      path: '/movies',
+      name: 'movies',
+      component: MoviesView,
+    },
+    {
+      path: '/movies/:id',
+      name: 'movie',
+      component: MovieView,
       props: true,
     },
   ],

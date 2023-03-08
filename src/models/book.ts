@@ -1,4 +1,6 @@
-export default class Book {
+import Media from '@/models/media';
+
+export default class Book extends Media {
   public subjects!: string[];
   public description!: string;
   public authors!: string[];
@@ -9,16 +11,15 @@ export default class Book {
   public userPage: number = 0;
 
   constructor(
-    private _id: string,
+    _id: string,
+    _upvotes: number,
+    _downvotes: number,
+
     private _title: string,
     private _cover: string,
-    private _publishedAt: string,
-    private _upvotes: number,
-    private _downvotes: number
-  ) {}
-
-  get id(): string {
-    return this._id;
+    private _publishedAt: string
+  ) {
+    super(_id, _upvotes, _downvotes);
   }
 
   get title(): string {
@@ -33,28 +34,14 @@ export default class Book {
     return this._publishedAt;
   }
 
-  get upvotes(): number {
-    return this._upvotes;
-  }
-  set upvotes(value: number) {
-    this._upvotes = value;
-  }
-
-  get downvotes(): number {
-    return this._downvotes;
-  }
-  set downvotes(value: number) {
-    this._downvotes = value;
-  }
-
   static fromJson(json: any): Book {
     const book = new Book(
       json.id,
+      json.upvotes,
+      json.downvotes,
       json.title,
       json.cover,
-      json.published_at,
-      json.upvotes,
-      json.downvotes
+      json.published_at
     );
 
     book.subjects = json.subjects;

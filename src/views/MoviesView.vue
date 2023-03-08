@@ -7,7 +7,7 @@ import BookProvider from '@/providers/book';
 import type Book from '@/models/book';
 
 import MediaList from '@/components/MediaList.vue';
-import BookCard from '@/components/media/BookCard.vue';
+import MovieCard from '@/components/media/MovieCard.vue';
 
 const books = ref([] as Book[]);
 const search = ref('');
@@ -22,11 +22,7 @@ const debouncedSearch = debounce(async function () {
   books.value = await BookProvider.fetchBooks(search.value, 12, offset.value);
 }, 500);
 
-onMounted(async () => {
-  books.value = await BookProvider.fetchBooks(search.value, 12, offset.value);
-});
-
-const onScroll = async () => {
+const infiniteScroll = async () => {
   if (!hasMore.value) {
     return;
   }
@@ -42,20 +38,24 @@ const onScroll = async () => {
 
   hasMore.value = newBooks.length > 0;
 };
+
+onMounted(async () => {
+  books.value = await BookProvider.fetchBooks(search.value, 12, offset.value);
+});
 </script>
 
 <template>
   <main
-    style="max-height: calc(100vh - var(--h-navbar))"
-    class="pt-8 h-screen flex flex-col gap-4"
+    style="max-height: calc(100vh - 56px)"
+    class="h-screen flex flex-col gap-4"
   >
     <div class="flex items-center">
       <div class="grow">
-        <h1 class="text-xl font-semibold">Books</h1>
+        <h1 class="text-xl font-semibold">Movies</h1>
       </div>
 
       <!-- Search bar -->
-      <div class="m-2 flex items-center bg-gray-100 rounded shadow">
+      <div class="m-2 flex items-center bg-gray-100 rounded shadow drop-shadow">
         <input
           v-model="search"
           v-on:input="debouncedSearch"
@@ -66,11 +66,11 @@ const onScroll = async () => {
       </div>
     </div>
 
-    <!-- Book cards -->
+    <!-- Movies cards -->
     <MediaList
-      :scroll-event="onScroll"
+      :scroll-event="infiniteScroll"
       :medias="(books as Book[])"
-      :mediaCard="BookCard"
+      :mediaCard="MovieCard"
     />
   </main>
 </template>
