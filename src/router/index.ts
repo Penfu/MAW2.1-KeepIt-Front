@@ -39,6 +39,9 @@ const router = createRouter({
       path: '/books',
       name: 'books',
       component: BooksView,
+      meta: {
+        inNavbar: true,
+      },
     },
     {
       path: '/books/:id',
@@ -50,6 +53,9 @@ const router = createRouter({
       path: '/movies',
       name: 'movies',
       component: MoviesView,
+      meta: {
+        inNavbar: true,
+      },
     },
     {
       path: '/movies/:id',

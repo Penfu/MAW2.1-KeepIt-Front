@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from '@/router';
 import { RouterLink, RouterView } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 
@@ -6,8 +7,7 @@ import Dropdown from '@/components/Dropdown.vue';
 import ProfileIcon from '@/components/icons/ProfileIcon.vue';
 import HamburgerIcon from '@/components/icons/HamburgerIcon.vue';
 
-const Route = (name: string, path: string) => ({ name, path });
-const routes = [Route('Books', '/books'), Route('Movies', '/movies')];
+const routes = router.getRoutes().filter((route) => route.meta?.inNavbar);
 
 const auth = useAuthStore();
 </script>
