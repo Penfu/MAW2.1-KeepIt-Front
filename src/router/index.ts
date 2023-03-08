@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import NotFoundViewVue from '@/views/NotFoundView.vue';
 
-import LoginView from '@/views/LoginView.vue';
-import RegisterView from '@/views/RegisterView.vue';
+import LoginView from '@/views/authentication/LoginView.vue';
+import RegisterView from '@/views/authentication/RegisterView.vue';
 
 import HomeView from '@/views/HomeView.vue';
 
