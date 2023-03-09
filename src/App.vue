@@ -47,10 +47,10 @@ const auth = useAuthStore();
                   class="absolute z-20 w-44 right-0 mt-2 p-2 bg-white rounded-lg border border-gray-200 shadow-md"
                 >
                   <div class="space-y-4">
-                    <h4>Logged as user X</h4>
+                    <h4>Logged as user {{ auth.user?.id }}</h4>
                     <RouterLink
-                      to="/profile"
-                      class="w-full block px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      :to="{ name: 'profile', params: { id: auth.user?.id } }"
+                      class="w-full block px-4 py-2 font-semibold hover:bg-gray-100 border rounded"
                     >
                       Profile
                     </RouterLink>
@@ -104,7 +104,18 @@ const auth = useAuthStore();
                       class="mx-2 flex flex-col gap-8 border-t-2 border-gray-600"
                     >
                       <div v-if="auth.isAuth" class="flex flex-col space-y-4">
-                        <span class="py-4">Logged as user X</span>
+                        <span class="py-4"
+                          >Logged as user {{ auth.user?.id }}</span
+                        >
+                        <RouterLink
+                          :to="{
+                            name: 'profile',
+                            params: { id: auth.user?.id },
+                          }"
+                          class="w-full block px-4 py-2 text-lg font-semibold bg-gray-100 hover:bg-gray-200 rounded"
+                        >
+                          Profile
+                        </RouterLink>
                         <button
                           @click="auth.logout()"
                           class="bg-red-500 hover:bg-red-600 text-white font-bold p-4 rounded"
