@@ -1,26 +1,37 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import type User from '@/models/user';
 
 export type Error = {
   $message: string;
 };
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref({
-    id: null as number | null,
-  });
   const token = ref(null as string | null);
   const refreshToken = ref(null as string | null);
   const isAuth = computed(() => token.value != null);
+
+  const user = computed(() => {
+    if (token.value) {
+      try {
+        const decoded = jwt_decode(token.value) as { user: User };
+        return decoded.user;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    return null;
+  });
 
   const message = ref<string>();
   const loginErrors = ref<Error[]>([]);
   const registerErrors = ref<Error[]>([]);
 
   // Auto-login if token is present in localStorage
-  if (localStorage.getItem("token")) {
-    token.value = localStorage.getItem("token");
+  if (localStorage.getItem('token')) {
+    token.value = localStorage.getItem('token');
   }
 
   function cleanErrors() {
@@ -29,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function cleanMessage() {
-    message.value = "";
+    message.value = '';
   }
 
   async function login(email: string, password: string): Promise<void> {
@@ -39,13 +50,13 @@ export const useAuthStore = defineStore('auth', () => {
         password: password,
       });
 
-      token.value = response.data["access_token"];
-      refreshToken.value = response.data["refresh_token"];
+      token.value = response.data['access_token'];
+      refreshToken.value = response.data['refresh_token'];
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
     } catch (error) {
-      console.log(error.response.data["field-error"]);
-      loginErrors.value = [{ $message: error.response.data["field-error"][1] }];
+      console.log(error.response.data['field-error']);
+      loginErrors.value = [{ $message: error.response.data['field-error'][1] }];
       return;
     }
   }
@@ -62,16 +73,18 @@ export const useAuthStore = defineStore('auth', () => {
         'password-confirm': password_confirm,
       });
 
-      token.value = response.data["access_token"];
-      refreshToken.value = response.data["refresh_token"];
+      token.value = response.data['access_token'];
+      refreshToken.value = response.data['refresh_token'];
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
 
-      message.value = "You have successfully registered!";
+      message.value = 'You have successfully registered!';
 
       cleanErrors();
     } catch (error) {
-      registerErrors.value = [{ $message: error.response.data["field-error"][1] }];
+      registerErrors.value = [
+        { $message: error.response.data['field-error'][1] },
+      ];
       return;
     }
   }

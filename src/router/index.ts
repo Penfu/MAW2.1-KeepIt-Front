@@ -37,9 +37,10 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       name: 'profile',
       component: ProfileView,
+      props: true,
     },
     {
       path: '/books',
