@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import type { ErrorObject } from '@vuelidate/core';
-import type { Error } from '@/stores/auth';
 
 defineProps<{
-  errors: ErrorObject[] | Error[];
+  message: string
 }>();
 </script>
 
 <template>
-  <div v-for="(error, index) in errors" :key="index" class="flex p-4 text-red-600 rounded-lg bg-red-50" role="alert">
+  <div class="flex p-4 text-green-600 rounded-lg bg-green-50" role="alert" :key="message">
     <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd"
@@ -17,7 +15,7 @@ defineProps<{
     </svg>
     <span class="sr-only">Info</span>
     <div class="ml-3 text-sm font-medium first-letter:capitalize w-full">
-      {{ error.$message }}
+      {{ message }}
     </div>
   </div>
 </template>
