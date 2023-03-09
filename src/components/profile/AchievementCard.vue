@@ -3,12 +3,11 @@ defineProps<{
   title: string;
   description: string;
   percentage: number;
-  picture: string;
 }>();
 </script>
 
 <template>
-  <div class="bg-white shadow-xl rounded-lg p-2 sm:p-4">
+  <div class="bg-white shadow-xl rounded-lg p-4 sm:p-2">
     <div class="flex items-center flex-row">
       <div class="flex-shrink-1">
         <span class="text-base leading-none font-bold text-gray-900">{{
@@ -17,9 +16,6 @@ defineProps<{
         <h3 class="text-xs font-normal text-gray-500">
           {{ description }}
         </h3>
-        <p>
-          <!-- {{ description }} -->
-        </p>
       </div>
       <div
         class="ml-5 flex items-center justify-end flex-1 text-green-500 text-base font-bold"
