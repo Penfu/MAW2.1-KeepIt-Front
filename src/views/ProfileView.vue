@@ -11,9 +11,12 @@ import UserCard from '@/components/profile/UserCard.vue';
 import type User from '@/models/user';
 import UserProvider from '@/providers/user';
 import NotFoundView from './NotFoundView.vue';
+import AchievementProvider from '@/providers/achievement';
+import type Achievement from '@/models/achievement';
 
 const props = defineProps<{ id: string }>();
 const user = ref({} as User);
+const achievements = ref([] as Achievement[]);
 
 const isLoading = ref(true);
 const notFound = ref(false);
@@ -24,50 +27,22 @@ watch(
     isLoading.value = true;
     notFound.value = false;
 
-    try {
-      const data = await UserProvider.fetchUser(newId);
-      user.value = data;
-      notFound.value = false;
-    } catch (err) {
-      user.value = {} as User;
-      notFound.value = true;
-    }
+    UserProvider.fetchUser(newId)
+      .then((data) => {
+        user.value = data;
+        notFound.value = false;
+      })
+      .catch((err) => {
+        user.value = {} as User;
+        notFound.value = true;
+      });
 
     isLoading.value = false;
+
+    achievements.value = await AchievementProvider.fetchAchievements(4);
   },
   { immediate: true }
 );
-
-const achievements = [
-  {
-    title: 'Master of the Elements',
-    description:
-      'Unlock every elemental ability in the game and defeat the final boss using all four elements',
-    percentage: 15,
-  },
-  {
-    title: 'Treasure Hunter',
-    description:
-      'Find all hidden treasure chests scattered throughout the game world.',
-    percentage: 2,
-  },
-  {
-    title: 'Master of the Elements',
-    description:
-      'Unlock every elemental ability in the game and defeat the final boss using all four elements',
-    percentage: 15,
-  },
-  {
-    title: 'Treasure Hunter',
-    description:
-      'Find all hidden treasure chests scattered throughout the game world.',
-    percentage: 2,
-  },
-];
-
-const firstFourAchievements = computed(() => achievements.slice(0, 4));
-
-// Set default component view (Activities)
 const step = ref(0);
 
 const steps = [
@@ -105,15 +80,16 @@ const updateStepByTitle = (title: string) => {
 
         <div class="flex flex-col sm:w-2/3">
           <div class="grid md:grid-cols-2 gap-4 pr-5">
-            <template v-for="achievement in firstFourAchievements">
+            <template v-for="achievement in achievements">
               <AchievementCard
                 :title="achievement.title"
                 :description="achievement.description"
                 :percentage="achievement.percentage"
+                :earned-date="achievement.earnedDate"
               />
             </template>
           </div>
-          <p class="pt-5 text-center" v-if="achievements.length > 4">
+          <p class="pt-5 text-center" v-if="achievements.length >= 4">
             <a
               class="text-sky-400 hover:text-sky-900 transition duration-500 ease-in-out"
               href="#tab-Achievements"

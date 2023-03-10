@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import moment from 'moment';
+
 defineProps<{
   title: string;
   description: string;
   percentage: number;
+  earnedDate: Date;
 }>();
 </script>
 
@@ -16,6 +19,9 @@ defineProps<{
         <h3 class="text-xs font-normal text-gray-500">
           {{ description }}
         </h3>
+        <span class="text-xs italic text-gray-400">{{
+          moment(earnedDate).format(' Do MMM YY')
+        }}</span>
       </div>
       <div
         class="ml-5 flex items-center justify-end flex-1 text-green-500 text-base font-bold"
