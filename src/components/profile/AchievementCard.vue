@@ -5,7 +5,7 @@ defineProps<{
   title: string;
   description: string;
   percentage: number;
-  earnedDate: Date;
+  earnedDate: string;
 }>();
 </script>
 

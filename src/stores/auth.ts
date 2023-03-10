@@ -1,35 +1,46 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import type User from '@/models/user';
+import User from '@/models/user';
 
 export type Error = {
   $message: string;
 };
 
+type DecodedToken = {
+  user: User;
+};
+
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(null as string | null);
   const refreshToken = ref(null as string | null);
-  const isAuth = computed(() => token.value != null);
-
-  const user = computed(() => {
-    if (token.value) {
-      try {
-        const decoded = jwt_decode(token.value) as { user: User };
-        return decoded.user;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    return null;
-  });
-
   const message = ref<string>();
   const loginErrors = ref<Error[]>([]);
   const registerErrors = ref<Error[]>([]);
+  const user = ref<User | null>(null);
+  const isAuth = computed(() => !!user.value);
+  const decodedToken = computed(() => {
+    if (token.value) {
+      console.log(jwt_decode(token.value));
+      return jwt_decode(token.value) as DecodedToken;
+    } else {
+      return null;
+    }
+  });
 
-  // Auto-login if token is present in localStorage
+  // subscribe to token changes and set user if token is present
+  watch(decodedToken, (newVal) => {
+    User.fromJson(newVal?.user)
+      .then((currentUser) => {
+        user.value = currentUser;
+      })
+      .catch((errors) => {
+        console.log(errors);
+        user.value = null;
+      });
+  });
+
   if (localStorage.getItem('token')) {
     token.value = localStorage.getItem('token');
   }
@@ -54,7 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
       refreshToken.value = response.data['refresh_token'];
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.response.data['field-error']);
       loginErrors.value = [{ $message: error.response.data['field-error'][1] }];
       return;
@@ -81,7 +92,7 @@ export const useAuthStore = defineStore('auth', () => {
       message.value = 'You have successfully registered!';
 
       cleanErrors();
-    } catch (error) {
+    } catch (error: any) {
       registerErrors.value = [
         { $message: error.response.data['field-error'][1] },
       ];

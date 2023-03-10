@@ -49,7 +49,10 @@ const auth = useAuthStore();
                   <div class="space-y-4">
                     <h4>Logged as user {{ auth.user?.id }}</h4>
                     <RouterLink
-                      :to="{ name: 'profile', params: { id: auth.user?.id } }"
+                      :to="{
+                        name: 'profile',
+                        params: { id: auth.user?.id ?? '' },
+                      }"
                       class="w-full block px-4 py-2 font-semibold hover:bg-gray-100 border rounded"
                     >
                       Profile
@@ -104,13 +107,11 @@ const auth = useAuthStore();
                       class="mx-2 flex flex-col gap-8 border-t-2 border-gray-600"
                     >
                       <div v-if="auth.isAuth" class="flex flex-col space-y-4">
-                        <span class="py-4"
-                          >Logged as user {{ auth.user?.id }}</span
-                        >
+                        <span class="py-4">Logged as user {{ auth.user }}</span>
                         <RouterLink
                           :to="{
                             name: 'profile',
-                            params: { id: auth.user?.id },
+                            params: { id: auth.user?.id ?? '' },
                           }"
                           class="w-full block px-4 py-2 text-lg font-semibold bg-gray-100 hover:bg-gray-200 rounded"
                         >
@@ -140,7 +141,6 @@ const auth = useAuthStore();
         </div>
       </nav>
     </header>
-
     <RouterView class="mx-4 md:mx-12 xl:mx-auto max-w-6xl" />
   </div>
 </template>

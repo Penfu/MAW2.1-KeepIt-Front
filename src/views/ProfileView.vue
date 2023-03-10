@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AchievementCard from '@/components/profile/AchievementCard.vue';
-import { computed, onMounted, onUpdated, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Activities from './profile/Activities.vue';
 import Friends from './profile/Friends.vue';
 import Achievements from './profile/Achievements.vue';
@@ -10,35 +10,22 @@ import AchievementIcon from '@/components/icons/AchievementIcon.vue';
 import UserCard from '@/components/profile/UserCard.vue';
 import type User from '@/models/user';
 import UserProvider from '@/providers/user';
-import NotFoundView from './NotFoundView.vue';
 import AchievementProvider from '@/providers/achievement';
 import type Achievement from '@/models/achievement';
 
 const props = defineProps<{ id: string }>();
-const user = ref({} as User);
+const user = ref(null as User | null);
 const achievements = ref([] as Achievement[]);
 
-const isLoading = ref(true);
-const notFound = ref(false);
+const isUserLoading = computed(() => {
+  return user.value === null;
+});
 
 watch(
   () => props.id,
   async (newId) => {
-    isLoading.value = true;
-    notFound.value = false;
-
-    UserProvider.fetchUser(newId)
-      .then((data) => {
-        user.value = data;
-        notFound.value = false;
-      })
-      .catch((err) => {
-        user.value = {} as User;
-        notFound.value = true;
-      });
-
-    isLoading.value = false;
-
+    user.value = null;
+    user.value = await UserProvider.fetchUser(newId);
     achievements.value = await AchievementProvider.fetchAchievements(4);
   },
   { immediate: true }
@@ -62,19 +49,18 @@ const updateStepByTitle = (title: string) => {
 </script>
 
 <template>
-  <div v-if="isLoading" class="pt-10 flex justify-center items-center">
-    <div
-      class="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-800"
-    ></div>
-  </div>
-  <div v-else>
-    <component v-if="notFound" :is="NotFoundView"></component>
+  <div>
+    <div v-if="isUserLoading" class="pt-10 flex justify-center items-center">
+      <div
+        class="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-800"
+      ></div>
+    </div>
     <div v-else class="pt-10">
       <div class="flex flex-col md:flex-row md:items-start items-center">
         <div class="flex flex-row justify-center md:w-2/3">
           <UserCard
-            :fullname="user.username ?? user.email"
             description="veniam ea excepturi "
+            :name="user?.username ?? user?.email"
           />
         </div>
 
@@ -85,7 +71,7 @@ const updateStepByTitle = (title: string) => {
                 :title="achievement.title"
                 :description="achievement.description"
                 :percentage="achievement.percentage"
-                :earned-date="achievement.earnedDate"
+                :earned-date="achievement.earnedDate.toString()"
               />
             </template>
           </div>
@@ -126,7 +112,7 @@ const updateStepByTitle = (title: string) => {
       </div>
 
       <keep-alive>
-        <component :is="steps[step].component" />
+        <component :is="steps[step].component" v-model="props.id" />
       </keep-alive>
     </div>
   </div>
