@@ -6,10 +6,12 @@ const props = defineProps<{
   media: Book;
 }>();
 
-const voteRatio = computed(() =>
-  Math.round(
-    (props.media.upvotes / (props.media.upvotes + props.media.downvotes)) * 100
-  )
+const voteRatio = computed(
+  () =>
+    Math.round(
+      (props.media.upvotes / (props.media.upvotes + props.media.downvotes)) *
+        100
+    ) || 0
 );
 
 const readableUpvotes = computed(() =>
