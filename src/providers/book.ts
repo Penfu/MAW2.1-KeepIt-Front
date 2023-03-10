@@ -1,7 +1,8 @@
 import Book from '@/models/book';
 import axios from 'axios';
+import Provider from './provider';
 
-export default class BookProvider {
+export default class BookProvider extends Provider {
   static async fetchBook(id: string): Promise<Book> {
     try {
       const book = (await axios.get('/books/' + id)).data;
@@ -22,10 +23,10 @@ export default class BookProvider {
         title == ''
           ? (await axios.get('/books?max=' + max + '&offset=' + offset)).data
           : (
-              await axios.get(
-                '/books/search?q=' + title + '&max=' + max + '&offset=' + offset
-              )
-            ).data;
+            await axios.get(
+              '/books/search?q=' + title + '&max=' + max + '&offset=' + offset
+            )
+          ).data;
 
       return books.data.items.map((book: JSON) => Book.fromJson(book));
     } catch (error) {
@@ -36,7 +37,7 @@ export default class BookProvider {
 
   static async upVote(id: string = ''): Promise<void> {
     try {
-      await axios.put(`/books/${id}/upvote`);
+      await axios.put(`/books/${id}/upvote`, {}, Provider.config());
     } catch (error) {
       console.error(error);
       throw error;
@@ -45,7 +46,7 @@ export default class BookProvider {
 
   static async downVote(id: string = ''): Promise<void> {
     try {
-      await axios.put(`/books/${id}/downvote`);
+      await axios.put(`/books/${id}/downvote`, {}, Provider.config());
     } catch (error) {
       console.error(error);
       throw error;
@@ -54,7 +55,7 @@ export default class BookProvider {
 
   static async unVote(id: string = ''): Promise<void> {
     try {
-      await axios.delete(`/books/${id}/unvote`);
+      await axios.delete(`/books/${id}/unvote`, Provider.config());
     } catch (error) {
       console.error(error);
       throw error;
@@ -63,7 +64,7 @@ export default class BookProvider {
 
   static async track(id: string = '', page: number): Promise<void> {
     try {
-      await axios.put(`/books/${id}/track`, { page });
+      await axios.put(`/books/${id}/track`, { page }, Provider.config());
     } catch (error) {
       console.error(error);
       throw error;
