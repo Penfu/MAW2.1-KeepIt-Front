@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import ProfileIcon from '@/components/icons/ProfileIcon.vue';
 defineProps<{
-  description: string | undefined;
+  id: string | undefined;
+  email: string | undefined;
   name: string | undefined;
 }>();
 </script>
@@ -14,9 +15,11 @@ defineProps<{
         href="#"
         class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out"
       >
-        {{ name }}
+        {{ email }}
       </a>
-      <p>{{ description }}</p>
+      <p>{{ name }}</p>
     </div>
+
+    <slot />
   </div>
 </template>

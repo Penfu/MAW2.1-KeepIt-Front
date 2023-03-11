@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import User from '@/models/user';
+import Provider from '@/providers/provider';
 
 export type Error = {
   $message: string;
@@ -13,8 +14,8 @@ type DecodedToken = {
 };
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(null as string | null);
-  const refreshToken = ref(null as string | null);
+  const token = ref<string | null>(null);
+  const refreshToken = ref<string | null>(null);
   const message = ref<string>();
   const loginErrors = ref<Error[]>([]);
   const registerErrors = ref<Error[]>([]);
@@ -40,8 +41,9 @@ export const useAuthStore = defineStore('auth', () => {
       });
   });
 
-  if (localStorage.getItem('token')) {
+  if (localStorage.getItem('token') && localStorage.getItem('refresh_token')) {
     token.value = localStorage.getItem('token');
+    refreshToken.value = localStorage.getItem('refresh_token');
   }
 
   function cleanErrors() {
@@ -108,6 +110,26 @@ export const useAuthStore = defineStore('auth', () => {
     cleanErrors();
   }
 
+  async function refreshJwtToken() {
+    user.value = null;
+    try {
+      const response = await axios.post(
+        '/jwt-refresh',
+        {
+          refresh_token: refreshToken.value,
+        },
+        Provider.config()
+      );
+      token.value = response.data['access_token'];
+      refreshToken.value = response.data['refresh_token'];
+      localStorage.setItem('token', token.value as string);
+      localStorage.setItem('refresh_token', refreshToken.value as string);
+    } catch (error: any) {
+      console.log(error);
+      logout();
+    }
+  }
+
   return {
     user,
     isAuth,
@@ -116,6 +138,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     loginErrors,
     registerErrors,
+    refreshJwtToken,
     message,
     Error,
     token,

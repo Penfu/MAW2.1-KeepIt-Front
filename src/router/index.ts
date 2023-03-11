@@ -13,8 +13,10 @@ import BookView from '@/views/BookView.vue';
 import MovieView from '@/views/MovieView.vue';
 import MoviesView from '@/views/MoviesView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import ProfileEditView from '@/views/profile/ProfileEditView.vue';
 import middlewarePipeline from '@/middleware/middlewarePipeline';
 import guest from '@/middleware/guest';
+import auth from '@/middleware/auth';
 
 export type GuardType = {
   to: RouteLocationNormalized;
@@ -48,10 +50,19 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/profile/:id',
+      path: '/users/:id',
       name: 'profile',
       component: ProfileView,
       props: true,
+    },
+    {
+      path: '/users/:id/edit',
+      name: 'profile-edit',
+      props: true,
+      component: ProfileEditView,
+      meta: {
+        middleware: [auth],
+      },
     },
     {
       path: '/books',
