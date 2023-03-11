@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AchievementCard from '@/components/profile/AchievementCard.vue';
 import { computed, ref, watch } from 'vue';
-import Activities from './profile/Activities.vue';
-import Friends from './profile/Friends.vue';
-import Achievements from './profile/Achievements.vue';
+import Activities from './profile/ActivitiesView.vue';
+import Friends from './profile/FriendsView.vue';
+import Achievements from './profile/AchievementsView.vue';
 import ActivityIcon from '@/components/icons/ActivityIcon.vue';
 import FriendIcon from '@/components/icons/FriendIcon.vue';
 import AchievementIcon from '@/components/icons/AchievementIcon.vue';
