@@ -22,7 +22,6 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuth = computed(() => !!user.value);
   const decodedToken = computed(() => {
     if (token.value) {
-      console.log(jwt_decode(token.value));
       return jwt_decode(token.value) as DecodedToken;
     } else {
       return null;
@@ -102,6 +101,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     token.value = null;
+    user.value = null;
     localStorage.removeItem('token');
 
     cleanMessage();
