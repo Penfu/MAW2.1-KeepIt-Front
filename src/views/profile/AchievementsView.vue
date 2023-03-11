@@ -31,14 +31,14 @@ watch(
       ></div>
     </div>
     <div v-else class="grid md:grid-cols-2 gap-4 pr-5">
-      <template v-for="achievement in achievements">
-        <AchievementCard
-          :title="achievement.title"
-          :description="achievement.description"
-          :percentage="achievement.percentage"
-          :earned-date="achievement.earnedDate.toString()"
-        />
-      </template>
+      <AchievementCard
+        v-for="achievement in achievements"
+        :key="achievement.id"
+        :title="achievement.title"
+        :description="achievement.description"
+        :percentage="achievement.percentage"
+        :earned-date="achievement.earnedDate.toString()"
+      />
     </div>
   </div>
 </template>

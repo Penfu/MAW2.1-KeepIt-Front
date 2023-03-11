@@ -78,7 +78,7 @@ const updateStepByTitle = (title: string) => {
       ></div>
     </div>
     <div v-else class="pt-10">
-      <div :class="class">
+      <div :class="props.class">
         <div class="flex flex-col md:flex-row md:items-start items-center">
           <div class="flex flex-row justify-center md:w-2/3">
             <UserCard
@@ -92,14 +92,16 @@ const updateStepByTitle = (title: string) => {
 
           <div class="flex flex-col sm:w-2/3">
             <div class="grid md:grid-cols-2 gap-4 pr-5">
-              <template v-for="achievement in achievements">
-                <AchievementCard
-                  :title="achievement.title"
-                  :description="achievement.description"
-                  :percentage="achievement.percentage"
-                  :earned-date="achievement.earnedDate.toString()"
-                />
-              </template>
+              <!-- <template > -->
+              <AchievementCard
+                v-for="achievement in achievements"
+                :key="achievement.id"
+                :title="achievement.title"
+                :description="achievement.description"
+                :percentage="achievement.percentage"
+                :earned-date="achievement.earnedDate.toString()"
+              />
+              <!-- </template> -->
             </div>
             <p class="pt-5 text-center" v-if="achievements.length >= 4">
               <a
@@ -140,8 +142,8 @@ const updateStepByTitle = (title: string) => {
         <keep-alive>
           <component
             :is="steps[step].component"
-            v-model="props.id"
-            :class="class"
+            :v-model="props.id"
+            :class="props.class"
           />
         </keep-alive>
       </div>

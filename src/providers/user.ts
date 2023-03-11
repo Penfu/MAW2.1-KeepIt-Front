@@ -8,6 +8,7 @@ export default class UserProvider {
       const user = (await axios.get('/users/' + id)).data;
       return User.fromJson(user);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -19,6 +20,7 @@ export default class UserProvider {
       ).data;
       return User.fromJson(updatedUser);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }

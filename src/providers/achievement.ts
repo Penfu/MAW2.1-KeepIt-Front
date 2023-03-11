@@ -1,11 +1,11 @@
 import Achievement from '@/models/achievement';
-import axios from 'axios';
 import achievements from './achievements.json';
 
 export default class AchievementProvider {
   static async fetchAchievements(
     max: number = 10,
     offset: number = 0,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     userId: string = ''
   ): Promise<Achievement[]> {
     // We are using a local JSON file until the backend is ready to serve achievements
@@ -17,6 +17,7 @@ export default class AchievementProvider {
         Achievement.fromJson(achievement)
       );
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
