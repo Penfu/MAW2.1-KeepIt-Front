@@ -13,14 +13,35 @@ import UserProvider from '@/providers/user';
 import AchievementProvider from '@/providers/achievement';
 import type Achievement from '@/models/achievement';
 import ProfileEditView from './profile/ProfileEditView.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const props = defineProps<{ id: string; class: string }>();
 const user = ref<User | null>(null);
+const AuthStore = useAuthStore();
 const achievements = ref<Achievement[]>([]);
+const userCardProps = computed(() => {
+  return {
+    id: user.value?.id,
+    email: user.value?.email,
+    name: user.value?.username,
+  };
+});
 
 const isUserLoading = computed(() => {
   return user.value === null;
 });
+
+watch(
+  () => AuthStore.user,
+  async (newUser) => {
+    if (newUser?.id == props.id) {
+      // TODO: when the bug with jwt refresh will be fixed
+      // remove fetch user and instead use the user from the store (AuthStore.user)
+      user.value = await UserProvider.fetchUser(newUser?.id);
+    }
+  },
+  { immediate: true }
+);
 
 watch(
   () => props.id,
@@ -61,19 +82,10 @@ const updateStepByTitle = (title: string) => {
         <div class="flex flex-col md:flex-row md:items-start items-center">
           <div class="flex flex-row justify-center md:w-2/3">
             <UserCard
-              :email="user?.email ?? ''"
-              :name="user?.username ?? user?.email"
-              :id="user?.id.toString() ?? ''"
+              :email="userCardProps.email"
+              :name="userCardProps.name || ''"
+              :id="userCardProps.id"
             >
-              <!-- <router-link
-              :to="{
-                name: 'profile-edit',
-                params: { id: id },
-              }"
-              class="mt-5 text-sky-400 hover:text-sky-900 transition duration-500 ease-in-out"
-            >
-              Edit profile
-            </router-link> -->
               <ProfileEditView :id="id" />
             </UserCard>
           </div>
