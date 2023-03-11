@@ -56,15 +56,6 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/users/:id/edit',
-      name: 'profile-edit',
-      props: true,
-      component: ProfileEditView,
-      meta: {
-        middleware: [auth],
-      },
-    },
-    {
       path: '/books',
       name: 'books',
       component: BooksView,
