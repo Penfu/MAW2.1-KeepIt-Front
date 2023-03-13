@@ -57,12 +57,16 @@ const onSubmit = async () => {
 
   const UpdatedUser = new User(user.value?.id ?? props.id, email, username);
 
+  success.value = null;
+  errors.value = [];
+
   try {
     await UserProvider.updateUser(UpdatedUser);
     success.value = 'User updated';
     errors.value = [];
     await auth.refreshJwtToken();
   } catch (error: any) {
+    success.value = null;
     errors.value = Object.keys(error.response.data).map((key) => {
       return { $message: key + ' ' + error.response.data[key] };
     });
