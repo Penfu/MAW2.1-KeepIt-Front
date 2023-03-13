@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import moment from 'moment';
-
 defineProps<{
   title: string;
   description: string;
@@ -20,7 +18,11 @@ defineProps<{
           {{ description }}
         </h3>
         <span class="text-xs italic text-gray-400">{{
-          moment(earnedDate).format(' Do MMM YY')
+          new Date(earnedDate).toLocaleDateString('fr-CH', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+          })
         }}</span>
       </div>
       <div
