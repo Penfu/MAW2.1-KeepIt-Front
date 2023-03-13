@@ -6,13 +6,12 @@ import { email, required, minLength } from '@vuelidate/validators';
 import { computed, reactive, ref, watch } from 'vue';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/vue';
 import ErrorAlert from '@/components/ErrorAlert.vue';
-import SuccessAlert from '@/components/SuccessAlert.vue';
 import type { Error } from '@/stores/auth';
 import { useAuthStore } from '@/stores/auth';
 
 const props = defineProps<{ id: string }>();
 const user = ref<User | null>(null);
-const success = ref<string | null>(null);
+const isLoading = ref<boolean>(false);
 const errors = ref<Error[]>([]);
 const auth = useAuthStore();
 
@@ -48,29 +47,26 @@ const rules = {
 const v$ = useVuelidate(rules, formData);
 
 const onSubmit = async () => {
+  isLoading.value = true;
+  errors.value = [];
   const result = await v$.value.$validate();
   if (!result) {
     return;
   }
 
   const { email, username } = formData;
-
   const UpdatedUser = new User(user.value?.id ?? props.id, email, username);
-
-  success.value = null;
-  errors.value = [];
 
   try {
     await UserProvider.updateUser(UpdatedUser);
-    success.value = 'User updated';
-    errors.value = [];
     await auth.refreshJwtToken();
+    isOpen.value = false;
   } catch (error: any) {
-    success.value = null;
     errors.value = Object.keys(error.response.data).map((key) => {
       return { $message: key + ' ' + error.response.data[key] };
     });
   }
+  isLoading.value = false;
 };
 </script>
 
@@ -109,7 +105,6 @@ const onSubmit = async () => {
             @submit.prevent="onSubmit"
             class="mx-auto max-w-md flex flex-col space-y-6"
           >
-            <SuccessAlert v-if="success" :message="success" />
             <ErrorAlert :errors="[]" />
 
             <div class="space-y-2">
@@ -140,9 +135,13 @@ const onSubmit = async () => {
 
             <button
               type="submit"
-              class="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded text-lg"
+              class="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded text-lg flex justify-center items-center gap-2"
             >
               Save
+              <div
+                v-if="isLoading"
+                class="animate-spin rounded-full h-4 w-4 border-b-2 border-white-800"
+              ></div>
             </button>
           </form>
         </div>
