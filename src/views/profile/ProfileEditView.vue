@@ -3,18 +3,13 @@ import { computed, reactive, ref, watch } from 'vue';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/vue';
 import { email, required, minLength } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-
 import UserProvider from '@/providers/user';
-
 import { useAuthStore } from '@/stores/auth';
-import type { Error } from '@/stores/auth';
-
 import User from '@/models/user';
-
 import ErrorAlert from '@/components/ErrorAlert.vue';
-import { useAuthStore } from '@/stores/auth';
 import type { AuthError } from '@/types/Errors';
 
+const props = defineProps<{ id: string }>();
 const user = ref<User | null>(null);
 const isLoading = ref<boolean>(false);
 const errors = ref<AuthError[]>([]);
