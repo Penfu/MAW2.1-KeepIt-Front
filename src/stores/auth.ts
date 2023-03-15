@@ -2,8 +2,8 @@ import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+
 import User from '@/models/user';
-import Provider from '@/providers/provider';
 
 export type Error = {
   $message: string;
@@ -44,9 +44,12 @@ export const useAuthStore = defineStore('auth', () => {
       });
   });
 
+  // Automatically set token and refresh token if they are present in local storage
   if (localStorage.getItem('token') && localStorage.getItem('refresh_token')) {
     token.value = localStorage.getItem('token');
     refreshToken.value = localStorage.getItem('refresh_token');
+
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token.value;
   }
 
   function cleanErrors() {
@@ -67,8 +70,11 @@ export const useAuthStore = defineStore('auth', () => {
 
       token.value = response.data['access_token'];
       refreshToken.value = response.data['refresh_token'];
+
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
+
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + token.value;
     } catch (error: any) {
       return Promise.reject([
         { $message: error.response.data['field-error'][1] },
@@ -90,6 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       token.value = response.data['access_token'];
       refreshToken.value = response.data['refresh_token'];
+
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
 
@@ -107,6 +114,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     token.value = null;
     user.value = null;
+
     localStorage.removeItem('token');
 
     cleanMessage();
@@ -116,19 +124,16 @@ export const useAuthStore = defineStore('auth', () => {
   async function refreshJwtToken() {
     user.value = null;
     try {
-      const response = await axios.post(
-        '/jwt-refresh',
-        {
-          refresh_token: refreshToken.value,
-        },
-        Provider.config()
-      );
+      const response = await axios.post('/jwt-refresh', {
+        refresh_token: refreshToken.value,
+      });
+
       token.value = response.data['access_token'];
       refreshToken.value = response.data['refresh_token'];
+
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
     } catch (error: any) {
-      console.log(error);
       logout();
     }
   }

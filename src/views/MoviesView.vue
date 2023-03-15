@@ -3,23 +3,23 @@ import { onMounted, ref } from 'vue';
 
 import debounce from 'debounce';
 
-import BookProvider from '@/providers/book';
-import type Book from '@/models/book';
+import MovieProvider from '@/providers/movie';
+import type Movie from '@/models/movie';
 
 import MediaList from '@/components/MediaList.vue';
 import MovieCard from '@/components/media/MovieCard.vue';
 
-const books = ref([] as Book[]);
+const movies = ref([] as Movie[]);
 const search = ref('');
-const offset = ref(0 as number);
+const page = ref(0 as number);
 const hasMore = ref(true as boolean);
 
 const debouncedSearch = debounce(async function () {
-  console.log('Searching for books: ' + search.value);
+  console.log('Searching for movies: ' + search.value);
 
-  offset.value = 0;
+  page.value = 1;
   hasMore.value = true;
-  books.value = await BookProvider.fetchBooks(search.value, 12, offset.value);
+  movies.value = await MovieProvider.fetchMovies(search.value, page.value);
 }, 500);
 
 const infiniteScroll = async () => {
@@ -27,20 +27,20 @@ const infiniteScroll = async () => {
     return;
   }
 
-  console.log('Fetching more books... Offset: ' + offset.value);
-  offset.value += 12;
-  const newBooks = await BookProvider.fetchBooks(
+  console.log('Fetching more movies... Offset: ' + page.value);
+  page.value += 1;
+  const newmovies = await MovieProvider.fetchMovies(
     search.value,
-    12,
-    offset.value
+    page.value
   );
-  books.value.push(...newBooks);
+  movies.value.push(...newmovies);
 
-  hasMore.value = newBooks.length > 0;
+  hasMore.value = newmovies.length > 0;
 };
 
 onMounted(async () => {
-  books.value = await BookProvider.fetchBooks(search.value, 12, offset.value);
+  page.value += 1;
+  movies.value = await MovieProvider.fetchMovies(search.value, page.value);
 });
 </script>
 
@@ -61,7 +61,7 @@ onMounted(async () => {
           v-on:input="debouncedSearch"
           type="text"
           class="grow py-3 px-4 rounded-lg outline-none text-lg"
-          placeholder="Search for a book..."
+          placeholder="Search for a Movie..."
         />
       </div>
     </div>
@@ -69,7 +69,7 @@ onMounted(async () => {
     <!-- Movies cards -->
     <MediaList
       :scroll-event="infiniteScroll"
-      :medias="(books as Book[])"
+      :medias="(movies as Movie[])"
       :mediaCard="MovieCard"
     />
   </main>
