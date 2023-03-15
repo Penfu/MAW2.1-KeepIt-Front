@@ -12,12 +12,10 @@ const props = defineProps<{
     :to="'/movies/' + media.id"
     class="flex flex-col h-80 w-56 bg-gray-100 rounded-xl shadow drop-shadow-lg hover:cursor-pointer hover:scale-105 transition ease-in-out"
   >
-    <!-- Cover -->
+    <!-- Poster -->
     <div class="grow h-48 rounded-t-xl">
-      <!--
-        <img :src="'/assets/placeholder.png'" class="h-full w-full object-cover rounded-t-xl"
-        alt="Book cover" />
-      -->
+        <img :src="media.backdropPath" class="h-full w-full object-cover rounded-t-xl"
+        alt="Movie Poster" />
     </div>
 
     <!-- Vote -->
@@ -37,9 +35,10 @@ const props = defineProps<{
       class="z-20 px-4 pt-8 pb-4 h-32 bg-white rounded flex flex-col space-y-2"
     >
       <h2 class="relative group grow text-ellipsis overflow-hidden font-bold">
-        Titre du film
+        {{ media.title }}
       </h2>
-      <p class="text-sm text-gray-500">Date de sortie</p>
+      <p class="text-sm text-gray-500">{{ media.releaseDate }}</p> 
+      {{ media.adult ? '18+' : ''  }}
     </div>
   </RouterLink>
 </template>
