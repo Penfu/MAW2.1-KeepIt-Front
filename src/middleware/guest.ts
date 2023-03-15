@@ -7,7 +7,7 @@ export default function guest({ to, next }: GuardType): void {
   const isLoggedIn = authStore.isAuth;
   if (isLoggedIn) {
     return next({
-      name: (to.redirectedFrom?.name ?? (to.name as string)) as string,
+      name: (to.redirectedFrom?.name ?? 'home') as string,
       params: (to.redirectedFrom?.params ?? to.params) as RouteParamsRaw,
     });
   }

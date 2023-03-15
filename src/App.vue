@@ -48,9 +48,10 @@ const auth = useAuthStore();
                 >
                   <div class="space-y-4">
                     <RouterLink
+                      v-if="auth.user?.id"
                       :to="{
                         name: 'profile',
-                        params: { id: auth.user?.id ?? '' },
+                        params: { id: auth.user?.id },
                       }"
                       class="w-full block px-4 py-2 font-semibold hover:bg-gray-100 border rounded"
                     >
@@ -110,6 +111,7 @@ const auth = useAuthStore();
                         class="flex flex-col space-y-4 pt-4"
                       >
                         <RouterLink
+                          v-if="auth.user?.id"
                           :to="{
                             name: 'profile',
                             params: { id: auth.user?.id ?? '' },

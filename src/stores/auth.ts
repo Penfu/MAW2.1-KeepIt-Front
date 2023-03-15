@@ -20,8 +20,11 @@ export const useAuthStore = defineStore('auth', () => {
   const loginErrors = ref<Error[]>([]);
   const registerErrors = ref<Error[]>([]);
   const user = ref<User | null>(null);
-  const isAuth = computed(() => !!user.value);
+  const isAuth = computed(() => {
+    return !!token.value;
+  });
   const decodedToken = computed(() => {
+    console.log('token.value', token.value);
     if (token.value) {
       return jwt_decode(token.value) as DecodedToken;
     } else {
@@ -67,9 +70,9 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem('token', token.value as string);
       localStorage.setItem('refresh_token', refreshToken.value as string);
     } catch (error: any) {
-      console.log(error.response.data['field-error']);
-      loginErrors.value = [{ $message: error.response.data['field-error'][1] }];
-      return;
+      return Promise.reject([
+        { $message: error.response.data['field-error'][1] },
+      ]);
     }
   }
 
