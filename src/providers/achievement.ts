@@ -1,5 +1,5 @@
 import Achievement from '@/models/achievement';
-import achievements from './achievements.json';
+import achievements from '@/providers/achievements.json';
 
 export default class AchievementProvider {
   static async fetchAchievements(

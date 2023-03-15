@@ -22,10 +22,13 @@ export default class User {
   @IsNotEmpty()
   public username?: string | null;
 
+  private _avatar: string;
+
   private constructor(id: string, email: string, username?: string | null) {
+    this.id = id;
     this.email = email;
     this.username = username;
-    this.id = id;
+    this._avatar = 'https://xsgames.co/randomusers/avatar.php?g=male';
   }
 
   static async make(
@@ -48,6 +51,10 @@ export default class User {
 
   static async fromJson(json: any): Promise<User> {
     return await User.make(json.id, json.email, json.username);
+  }
+
+  get avatar(): string {
+    return this._avatar;
   }
 }
 

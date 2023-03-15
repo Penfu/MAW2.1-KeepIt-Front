@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import ProfileIcon from '@/components/icons/ProfileIcon.vue';
+import type User from '@/models/user';
+
 defineProps<{
-  id: string | undefined;
-  email: string | undefined;
-  name: string | undefined;
+  user: User;
 }>();
 </script>
 
 <template>
-  <div class="bg-white md:shadow-xl rounded-lg p-5">
-    <ProfileIcon class="w-16 h-16 rounded-full" />
-    <div class="text-sm pt-2">
-      <a
-        href="#"
-        class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out"
-      >
-        {{ email }}
-      </a>
-      <p>{{ name }}</p>
+  <div class="p-4 space-y-4 bg-white rounded-lg lg:shadow-lg shadow-gray-300">
+    <div class="flex flex-col md:flex-row items-center gap-4">
+      <img :src="user.avatar" class="w-32 rounded-lg shadow" />
+
+      <div>
+        <h2 class="text-xl font-bold">{{ user.username }}</h2>
+        <RouterLink
+          :to="{
+            name: 'profile',
+            params: { id: user.id ?? 0 },
+          }"
+          class="font-medium text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out"
+        >
+          {{ user.email }}
+        </RouterLink>
+      </div>
     </div>
 
     <slot />
