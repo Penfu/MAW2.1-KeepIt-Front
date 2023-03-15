@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref } from 'vue';
 import router from '@/router';
 import { RouterLink } from 'vue-router';
 import { email, required } from '@vuelidate/validators';
@@ -8,11 +8,10 @@ import useVuelidate from '@vuelidate/core';
 import { useAuthStore } from '@/stores/auth';
 
 import ErrorAlert from '@/components/ErrorAlert.vue';
-import SuccessAlert from '@/components/SuccessAlert.vue';
-import type { Error } from '@/stores/auth';
+import type { AuthError } from '@/types/Errors';
 
 const auth = useAuthStore();
-const authErrors = ref<Error[]>([]);
+const authErrors = ref<AuthError[]>([]);
 
 const formData = reactive({
   email: '',
@@ -38,8 +37,8 @@ const onSubmit = async () => {
     .then(() => {
       router.push({ name: 'home' });
     })
-    .catch((errors) => {
-      authErrors.value = errors;
+    .catch((error) => {
+      authErrors.value = [{ $message: error.response.data['field-error'][1] }];
     });
 };
 </script>
@@ -52,7 +51,6 @@ const onSubmit = async () => {
       @submit.prevent="onSubmit"
       class="mx-auto max-w-lg flex flex-col space-y-6"
     >
-      <SuccessAlert v-if="auth.message" :message="auth.message" />
       <ErrorAlert :errors="authErrors" />
 
       <div class="space-y-2">

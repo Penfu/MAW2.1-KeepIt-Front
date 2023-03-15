@@ -6,13 +6,13 @@ import { email, required, minLength } from '@vuelidate/validators';
 import { computed, reactive, ref, watch } from 'vue';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/vue';
 import ErrorAlert from '@/components/ErrorAlert.vue';
-import type { Error } from '@/stores/auth';
 import { useAuthStore } from '@/stores/auth';
+import type { AuthError } from '@/types/Errors';
 
 const props = defineProps<{ id: string }>();
 const user = ref<User | null>(null);
 const isLoading = ref<boolean>(false);
-const errors = ref<Error[]>([]);
+const errors = ref<AuthError[]>([]);
 const auth = useAuthStore();
 
 const isUserAuthorized = computed(() => {
@@ -55,7 +55,11 @@ const onSubmit = async () => {
   }
 
   const { email, username } = formData;
-  const UpdatedUser = new User(user.value?.id ?? props.id, email, username);
+  const UpdatedUser = await User.make(
+    user.value?.id ?? props.id,
+    email,
+    username
+  );
 
   try {
     await UserProvider.updateUser(UpdatedUser);

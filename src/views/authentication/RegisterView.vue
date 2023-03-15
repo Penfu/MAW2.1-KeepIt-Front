@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import router from '@/router';
 import { RouterLink } from 'vue-router';
 import { email, minLength, required, sameAs } from '@vuelidate/validators';
 import useVuelidate from '@vuelidate/core';
-
 import { useAuthStore } from '@/stores/auth';
-
 import ErrorAlert from '@/components/ErrorAlert.vue';
+import type { AuthError } from '@/types/Errors';
+
+const authErrors = ref<AuthError[]>([]);
 
 const onSubmit = async () => {
   const result = await v$.value.$validate();
@@ -16,13 +17,14 @@ const onSubmit = async () => {
     return;
   }
 
-  await auth.register(
-    formData.email,
-    formData.password,
-    formData.passwordConfirmation
-  );
-
-  if (auth.isAuth) router.push('/');
+  await auth
+    .register(formData.email, formData.password, formData.passwordConfirmation)
+    .then(() => {
+      router.push({ name: 'home' });
+    })
+    .catch((error) => {
+      authErrors.value = [{ $message: error.response.data['field-error'][1] }];
+    });
 };
 
 const formData = reactive({
@@ -50,7 +52,7 @@ const auth = useAuthStore();
       class="mx-auto max-w-lg flex flex-col space-y-6"
     >
       <div class="space-y-8">
-        <ErrorAlert :errors="auth.registerErrors" />
+        <ErrorAlert :errors="authErrors" />
 
         <div class="space-y-2">
           <ErrorAlert :errors="v$.email.$errors" />
