@@ -139,7 +139,10 @@ const onSubmit = async () => {
                 </div>
               </div>
 
-              <button type="submit" class="btn">
+              <button
+                type="submit"
+                class="btn flex justify-center items-center gap-4"
+              >
                 Save
                 <div
                   v-if="isLoading"
