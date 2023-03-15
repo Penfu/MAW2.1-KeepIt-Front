@@ -1,5 +1,6 @@
 import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
+
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
@@ -24,7 +25,6 @@ export const useAuthStore = defineStore('auth', () => {
     return !!token.value;
   });
   const decodedToken = computed(() => {
-    console.log('token.value', token.value);
     if (token.value) {
       return jwt_decode(token.value) as DecodedToken;
     } else {
@@ -38,8 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
       .then((currentUser) => {
         user.value = currentUser;
       })
-      .catch((errors) => {
-        console.log(errors);
+      .catch(() => {
         user.value = null;
       });
   });

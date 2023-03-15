@@ -30,7 +30,7 @@ const auth = useAuthStore();
                 v-for="route in routes"
                 :key="route.name"
                 :to="route.path"
-                class="p-2 font-semibold"
+                class="p-2 font-semibold capitalize hover:text-blue-500"
                 active-class="bg-blue-100 text-blue-500 rounded"
               >
                 {{ route.name }}
@@ -40,7 +40,10 @@ const auth = useAuthStore();
             <!-- User Actions -->
             <Dropdown v-if="auth.isAuth" class="relative">
               <template #trigger>
-                <ProfileIcon />
+                <img
+                  :src="auth.user?.avatar"
+                  class="w-10 rounded-full shadow"
+                />
               </template>
               <template #content>
                 <div
@@ -53,9 +56,9 @@ const auth = useAuthStore();
                         name: 'profile',
                         params: { id: auth.user?.id },
                       }"
-                      class="w-full block px-4 py-2 font-semibold hover:bg-gray-100 border rounded"
+                      class="text-lg font-semibold"
                     >
-                      <div class="text-sm">{{ auth.user?.username }}</div>
+                      {{ auth.user?.username }}
                     </RouterLink>
                     <button
                       @click="auth.logout()"
@@ -118,7 +121,7 @@ const auth = useAuthStore();
                           }"
                           class="w-full block px-4 py-2 text-lg font-semibold bg-gray-100 hover:bg-gray-200 rounded"
                         >
-                          {{ auth.user?.email }}
+                          {{ auth.user?.username }}
                         </RouterLink>
                         <button
                           @click="auth.logout()"
@@ -133,8 +136,8 @@ const auth = useAuthStore();
                         to="/login"
                         class="py-3 px-4 text-white text-center text-lg font-bold uppercase bg-blue-500 hover:bg-blue-600 rounded shadow shadow-blue-300"
                       >
-                        Login</RouterLink
-                      >
+                        Login
+                      </RouterLink>
                     </div>
                   </div>
                 </div>

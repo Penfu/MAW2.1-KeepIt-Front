@@ -20,10 +20,13 @@ export default class User {
   @IsNotEmpty()
   public username?: string | null;
 
+  private _avatar: string;
+
   constructor(id: string, email: string, username?: string | null) {
+    this.id = id;
     this.email = email;
     this.username = username;
-    this.id = id;
+    this._avatar = 'https://xsgames.co/randomusers/avatar.php?g=male';
   }
 
   static async fromJson(json: any): Promise<User> {
@@ -34,5 +37,9 @@ export default class User {
     });
 
     return user;
+  }
+
+  get avatar(): string {
+    return this._avatar;
   }
 }

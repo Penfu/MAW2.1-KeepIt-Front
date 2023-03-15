@@ -1,36 +1,37 @@
 <script setup lang="ts">
-import AchievementCard from '@/components/profile/AchievementCard.vue';
-import type Achievement from '@/models/achievement';
+import { onMounted, ref } from 'vue';
+
 import AchievementProvider from '@/providers/achievement';
-import { ref, watch } from 'vue';
+
+import type Achievement from '@/models/achievement';
+
+import AchievementCard from '@/components/profile/AchievementCard.vue';
+
+const props = defineProps<{
+  userId: string;
+}>();
 
 const achievements = ref([] as Achievement[]);
-const props = defineProps<{ modelValue: string }>();
 const isLoading = ref(true);
 
-watch(
-  () => props.modelValue,
-  async (newId) => {
-    isLoading.value = true;
-    achievements.value = await AchievementProvider.fetchAchievements(
-      10,
-      0,
-      newId
-    );
-    isLoading.value = false;
-  },
-  { immediate: true }
-);
+onMounted(async () => {
+  achievements.value = await AchievementProvider.fetchAchievements(
+    10,
+    0,
+    props.userId
+  );
+  isLoading.value = false;
+});
 </script>
 
 <template>
   <div>
     <div v-if="isLoading" class="pt-10 flex justify-center items-center">
       <div
-        class="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-800"
+        class="h-32 w-32 rounded-full border-b-2 border-cyan-800 animate-spin"
       ></div>
     </div>
-    <div v-else class="grid md:grid-cols-2 gap-4 pr-5">
+    <div v-else class="grid md:grid-cols-2 gap-4">
       <AchievementCard
         v-for="achievement in achievements"
         :key="achievement.id"

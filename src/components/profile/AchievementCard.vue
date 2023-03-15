@@ -8,31 +8,34 @@ defineProps<{
 </script>
 
 <template>
-  <div class="bg-white shadow-xl rounded-lg p-4 sm:p-2">
-    <div class="flex items-center flex-row">
-      <div class="flex-shrink-1">
-        <span class="text-base leading-none font-bold text-gray-900">{{
-          title
-        }}</span>
-        <h3 class="text-xs font-normal text-gray-500">
-          {{ description }}
+  <div class="p-4 bg-white rounded-lg shadow-md shadow-gray-300">
+    <div class="h-full flex justify-between items-center">
+      <div class="basis-3/4 h-full flex flex-col space-y-2">
+        <h3 class="leading-none font-bold text-gray-900">
+          {{ title }}
         </h3>
-        <span class="text-xs italic text-gray-400">{{
-          new Date(earnedDate).toLocaleDateString('fr-CH', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          })
-        }}</span>
+        <div class="grow">
+          <span class="text-sm text-gray-500">
+            {{ description }}
+          </span>
+        </div>
+        <span class="italic text-gray-400">
+          {{
+            new Date(earnedDate).toLocaleDateString('fr-CH', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            })
+          }}
+        </span>
       </div>
-      <div
-        class="ml-5 flex items-center justify-end flex-1 text-green-500 text-base font-bold"
-      >
+      <div class="flex justify-end items-center text-green-500 font-bold">
         <div class="group relative flex justify-center">
-          {{ percentage }}%
+          <span class="text-lg">{{ percentage }}%</span>
           <span
-            class="absolute top-6 scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100 w-32"
-            >Users who achieved this success ! ✨
+            class="absolute p-2 w-32 top-6 scale-0 bg-gray-800 rounded text-xs text-white group-hover:scale-100 transition-all"
+          >
+            Users who achieved this success ! ✨
           </span>
         </div>
       </div>
