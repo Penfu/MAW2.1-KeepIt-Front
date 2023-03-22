@@ -36,7 +36,6 @@ export const useAuthStore = defineStore('auth', () => {
         if (error instanceof InvalidUserException) {
           console.log(error.message);
         }
-        user.value = null;
         logout();
       });
   });
@@ -86,6 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = null;
     user.value = null;
     localStorage.removeItem('token');
+    localStorage.removeItem('refresh_token');
   }
 
   async function refreshJwtToken() {
