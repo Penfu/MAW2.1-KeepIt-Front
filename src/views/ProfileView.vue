@@ -42,7 +42,9 @@ watch(
   () => props.id,
   async (newId) => {
     user.value = await UserProvider.fetchUser(newId);
-    achievements.value = await AchievementProvider.fetchAchievements(4);
+    achievements.value = (
+      await AchievementProvider.fetchAchievements(newId, 4, 1)
+    ).items;
   },
   { immediate: true }
 );
@@ -128,7 +130,7 @@ const updateStepByTitle = (title: string) => {
             :title="achievement.title"
             :description="achievement.description"
             :percentage="achievement.percentage"
-            :earned-date="achievement.earnedDate.toString()"
+            :earned-date="achievement.earnedDate"
           />
         </div>
         <p class="text-center" v-if="achievements.length >= 4">
@@ -168,7 +170,7 @@ const updateStepByTitle = (title: string) => {
 
     <!-- Selected tab content -->
     <keep-alive>
-      <component :is="steps[step].component" :userId="user?.id" />
+      <component :is="steps[step].component" :userId="user?.id.toString()" />
     </keep-alive>
   </main>
 </template>

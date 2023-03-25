@@ -1,21 +1,38 @@
 import Achievement from '@/models/achievement';
-import achievements from '@/providers/achievements.json';
+import type { AchievementsResponse } from '@/types/responses';
+import axios from 'axios';
 
 export default class AchievementProvider {
-  static async fetchAchievements(
-    max: number = 10,
-    offset: number = 0,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    userId: number = 0
-  ): Promise<Achievement[]> {
-    // We are using a local JSON file until the backend is ready to serve achievements
-    const internalJSON = achievements;
+  static async fetchCount(userId: string = ''): Promise<number> {
     try {
-      // take max into account
-      const achievements = internalJSON.slice(offset, offset + max);
-      return achievements.map((achievement: any) =>
-        Achievement.fromJson(achievement)
-      );
+      const achievements = (
+        await axios.get(`users/${userId}/achievements/count`)
+      ).data;
+      return achievements.data.item.count;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async fetchAchievements(
+    userId: string = '',
+    max: number = 10,
+    offset: number = 0
+  ): Promise<AchievementsResponse> {
+    try {
+      const achievements = (
+        await axios.get(
+          `users/${userId}/achievements?max=${max}&offset=${offset}`
+        )
+      ).data;
+      return {
+        items: achievements.data.items.map((book: JSON) =>
+          Achievement.fromJson(book)
+        ),
+        totalItems: achievements.data.totalItems,
+        updated: achievements.data.updated,
+      };
     } catch (error) {
       console.log(error);
       throw error;

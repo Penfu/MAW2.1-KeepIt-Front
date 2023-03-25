@@ -2,14 +2,14 @@ export default class Achievement {
   public title: string;
   public description: string;
   public percentage: number;
-  public earnedDate: Date;
+  public earnedDate: string;
 
   constructor(
     private _id: string,
     title: string,
     description: string,
     percentage: number,
-    earnedDate: Date
+    earnedDate: string
   ) {
     this.title = title;
     this.description = description;
@@ -27,7 +27,7 @@ export default class Achievement {
       json.title,
       json.description,
       json.percentage,
-      json.earnedDate
+      json.created_at
     );
 
     return achievement;
