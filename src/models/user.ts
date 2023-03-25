@@ -28,7 +28,7 @@ export default class User {
 
   public receivedInvitation?: Invitation;
   public sentInvitation?: Invitation;
-  public isFriend = false;
+  public friendship?: Invitation;
 
   private constructor(id: number, email: string, username?: string | null) {
     this.id = id;
@@ -64,6 +64,8 @@ export default class User {
 
     if (json.sent_invitation)
       user.sentInvitation = Invitation.fromJson(json.sent_invitation);
+
+    if (json.friendship) user.friendship = Invitation.fromJson(json.friendship);
 
     return user;
   }

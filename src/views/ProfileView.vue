@@ -81,8 +81,7 @@ const updateStepByTitle = (title: string) => {
               v-if="user!.sentInvitation"
               class="btn flex items-center space-x-4"
             >
-              <FriendIcon />
-              <span>Accept</span>
+              Accept
             </button>
 
             <!-- You sent this user a friend request -->
@@ -93,26 +92,29 @@ const updateStepByTitle = (title: string) => {
               "
               class="btn flex items-center space-x-4"
             >
-              <FriendIcon />
-              <span>Cancel invitation</span>
+              Cancel invitation
             </button>
 
             <!-- You are not friends with this user and there is no pending request -->
             <button
-              v-else-if="!user!.isFriend"
+              v-else-if="!user!.friendship"
               @click="
                 async () => await FriendProvider.sendInvitation(user! as User)
               "
               class="btn flex items-center space-x-4"
             >
-              <FriendIcon />
-              <span>Invite</span>
+              Invite
             </button>
 
             <!-- You are friends with this user -->
-            <button v-else class="btn flex items-center space-x-4">
-              <FriendIcon />
-              <span>Unfriend</span>
+            <button
+              @click="
+                async () => await FriendProvider.removeFriend(user! as User)
+              "
+              v-else
+              class="btn flex items-center space-x-4"
+            >
+              Remove friend
             </button>
           </div>
         </UserCard>

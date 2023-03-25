@@ -41,11 +41,47 @@ export default class FriendProvider {
 
   static async cancelInvitation(user: User): Promise<void> {
     try {
-      await axios.delete('/invitations/' + user.receivedInvitation?.id);
+      await this.deleteFriendship(user.receivedInvitation!);
       user.receivedInvitation = undefined;
+      user.friendship = undefined;
     } catch (error) {
       console.log(error);
       throw error;
     }
+  }
+
+  static async acceptInvitation(invitation: Invitation): Promise<void> {
+    try {
+      await axios.put('/invitations/' + invitation.id + '/accept');
+      invitation.author!.receivedInvitation = undefined;
+      invitation.author!.friendship = invitation;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async declineInvitation(invitation: Invitation): Promise<void> {
+    try {
+      await this.deleteFriendship(invitation);
+      invitation.author!.receivedInvitation = undefined;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  static async removeFriend(user: User): Promise<void> {
+    try {
+      await this.deleteFriendship(user.friendship!);
+      user.friendship = undefined;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  private static async deleteFriendship(invitation: Invitation): Promise<void> {
+    await axios.delete('/invitations/' + invitation.id);
   }
 }
