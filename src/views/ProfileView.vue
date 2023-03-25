@@ -42,7 +42,9 @@ watch(
   () => props.id,
   async (newId) => {
     user.value = await UserProvider.fetchUser(newId);
-    achievements.value = await AchievementProvider.fetchAchievements(newId);
+    achievements.value = (
+      await AchievementProvider.fetchAchievements(newId, 4, 1)
+    ).items;
   },
   { immediate: true }
 );
