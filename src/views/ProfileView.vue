@@ -116,7 +116,7 @@ const updateStepByTitle = (title: string) => {
 
     <!-- Selected tab content -->
     <keep-alive>
-      <component :is="steps[step].component" userId="{{ user?.id }}" />
+      <component :is="steps[step].component" :userId="user?.id" />
     </keep-alive>
   </main>
 </template>

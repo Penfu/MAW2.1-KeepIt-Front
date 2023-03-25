@@ -1,5 +1,6 @@
-import User from '@/models/user';
 import axios from 'axios';
+
+import User from '@/models/user';
 
 export default class UserProvider {
   static async fetchUser(id: string): Promise<User> {

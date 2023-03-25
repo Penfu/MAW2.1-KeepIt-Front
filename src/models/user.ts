@@ -41,6 +41,10 @@ export default class User {
     return user;
   }
 
+  get avatar(): string {
+    return this._avatar;
+  }
+
   private static async validate(user: User): Promise<void> {
     await validateOrReject(user).catch((errors) => {
       throw new InvalidUserException(
@@ -51,10 +55,6 @@ export default class User {
 
   static async fromJson(json: any): Promise<User> {
     return await User.make(json.id, json.email, json.username);
-  }
-
-  get avatar(): string {
-    return this._avatar;
   }
 }
 
