@@ -117,7 +117,7 @@ const auth = useAuthStore();
                           v-if="auth.user?.id"
                           :to="{
                             name: 'profile',
-                            params: { id: auth.user?.id ?? '' },
+                            params: { id: auth.user?.id },
                           }"
                           class="w-full block px-4 py-2 text-lg font-semibold bg-gray-100 hover:bg-gray-200 rounded"
                         >

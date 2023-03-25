@@ -27,17 +27,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   // subscribe to token changes and set user if token is present
   watch(decodedToken, async (newToken) => {
-    await User.fromJson(newToken?.user)
-      .then((currentUser) => {
-        user.value = currentUser;
-      })
-      .catch((error: any) => {
-        // Only log the error if it is an InvalidUserException
-        if (error instanceof InvalidUserException) {
-          console.log(error.message);
-        }
-        logout();
-      });
+    try {
+      user.value = User.fromJson(newToken?.user);
+    } catch (error) {
+      if (error instanceof InvalidUserException) {
+        console.log(error.message);
+      }
+      logout();
+    }
   });
 
   // Automatically set token and refresh token if they are present in local storage

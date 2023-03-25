@@ -16,7 +16,7 @@ defineProps<{
         <RouterLink
           :to="{
             name: 'profile',
-            params: { id: user.id ?? 0 },
+            params: { id: user.id },
           }"
           class="font-medium text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out"
         >

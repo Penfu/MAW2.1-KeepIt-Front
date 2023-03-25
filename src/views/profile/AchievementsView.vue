@@ -8,7 +8,7 @@ import type Achievement from '@/models/achievement';
 import AchievementCard from '@/components/profile/AchievementCard.vue';
 
 const props = defineProps<{
-  userId: string;
+  userId: number;
 }>();
 
 const achievements = ref([] as Achievement[]);

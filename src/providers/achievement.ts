@@ -6,7 +6,7 @@ export default class AchievementProvider {
     max: number = 10,
     offset: number = 0,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    userId: string = ''
+    userId: number = 0
   ): Promise<Achievement[]> {
     // We are using a local JSON file until the backend is ready to serve achievements
     const internalJSON = achievements;
