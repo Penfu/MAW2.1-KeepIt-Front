@@ -28,6 +28,15 @@ const handleAcceptInvitation = async (invitation: Invitation) => {
   }
 };
 
+const handleDeclineInvitation = async (invitation: Invitation) => {
+  try {
+    await FriendProvider.declineInvitation(invitation);
+    invitations.value = invitations.value.filter((i) => i.id !== invitation.id);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const handleRemoveFriend = async (friend: User) => {
   try {
     await FriendProvider.removeFriend(friend);
@@ -58,9 +67,15 @@ const handleRemoveFriend = async (friend: User) => {
               {{ invitation.author?.username }}
             </h2>
           </div>
-          <button @click="handleAcceptInvitation(invitation)" class="btn">
-            Accept
-          </button>
+
+          <div class="space-x-2">
+            <button @click="handleDeclineInvitation(invitation)" class="btn">
+              Decline
+            </button>
+            <button @click="handleAcceptInvitation(invitation)" class="btn">
+              Accept
+            </button>
+          </div>
         </div>
         <div v-if="invitations.length === 0" class="text-gray-500">
           No pending invitations
