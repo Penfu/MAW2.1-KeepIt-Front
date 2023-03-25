@@ -4,20 +4,47 @@ import { onMounted, ref } from 'vue';
 import type User from '@/models/user';
 
 import FriendProvider from '@/providers/friend';
+import type Invitation from '@/models/invitation';
 
 const props = defineProps<{
   userId: number;
 }>();
 
+const invitations = ref([] as Invitation[]);
 const friends = ref([] as User[]);
 
 onMounted(async () => {
+  invitations.value = await FriendProvider.fetchInvitations(props.userId);
   friends.value = await FriendProvider.fetchFriends(props.userId);
 });
 </script>
 
 <template>
   <div>
+    <!-- Pending invitations -->
+    <div class="space-y-4">
+      <h2 class="text-2xl font-semibold text-gray-700">Pending invitations</h2>
+      <div class="flex">
+        <div
+          v-for="invitation in invitations"
+          :key="invitation.id"
+          class="px-4 py-2 flex items-center justify-between gap-8 bg-gray-100 rounded-lg shadow-md"
+        >
+          <div class="grow flex items-center space-x-2">
+            <img
+              class="h-12 w-12 rounded-full object-cover"
+              :src="invitation.author?.avatar"
+            />
+            <h2 class="text-lg font-semibold text-gray-700">
+              {{ invitation.author?.username }}
+            </h2>
+          </div>
+          <button class="btn">Accept</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Friends -->
     <div class="grid md:grid-cols-2 gap-4">
       <div
         v-for="friend in friends"
