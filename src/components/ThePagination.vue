@@ -59,7 +59,7 @@ const pageNumbersToShow = computed(() => {
 <template>
   <div
     aria-label="Pagination"
-    class="flex text-gray-600 flex-grow items-center justify-center"
+    class="flex text-gray-600 items-center justify-center flex-wrap"
   >
     <a
       v-if="currentPage > 1"
