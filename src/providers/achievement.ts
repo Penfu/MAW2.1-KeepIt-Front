@@ -1,5 +1,5 @@
 import Achievement from '@/models/achievement';
-import achievements from '@/providers/achievements.json';
+import axios from 'axios';
 
 export default class AchievementProvider {
   static async fetchAchievements(
@@ -8,13 +8,12 @@ export default class AchievementProvider {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     userId: number = 0
   ): Promise<Achievement[]> {
-    // We are using a local JSON file until the backend is ready to serve achievements
-    const internalJSON = achievements;
     try {
-      // take max into account
-      const achievements = internalJSON.slice(offset, offset + max);
-      return achievements.map((achievement: any) =>
-        Achievement.fromJson(achievement)
+      const achievements = (
+        await axios.get('users/' + userId + '/achievements')
+      ).data;
+      return achievements.data.items.map((book: JSON) =>
+        Achievement.fromJson(book)
       );
     } catch (error) {
       console.log(error);

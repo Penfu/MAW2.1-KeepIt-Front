@@ -7,18 +7,20 @@ import type Achievement from '@/models/achievement';
 
 import AchievementCard from '@/components/profile/AchievementCard.vue';
 
-const props = defineProps<{
-  userId: number;
-}>();
+const props = defineProps({
+  userId: {
+    type: String,
+    required: true,
+  },
+});
 
 const achievements = ref([] as Achievement[]);
 const isLoading = ref(true);
 
 onMounted(async () => {
   achievements.value = await AchievementProvider.fetchAchievements(
-    10,
-    0,
-    props.userId
+    props.userId,
+    20
   );
   isLoading.value = false;
 });
@@ -38,7 +40,7 @@ onMounted(async () => {
         :title="achievement.title"
         :description="achievement.description"
         :percentage="achievement.percentage"
-        :earned-date="achievement.earnedDate.toString()"
+        :earned-date="achievement.earnedDate"
       />
     </div>
   </div>
