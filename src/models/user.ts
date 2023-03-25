@@ -10,7 +10,7 @@ import {
 export default class User {
   @IsDefined()
   @IsNotEmpty()
-  readonly id: string;
+  readonly id: number;
 
   @IsString()
   @IsEmail()
@@ -24,7 +24,11 @@ export default class User {
 
   private _avatar: string;
 
-  private constructor(id: string, email: string, username?: string | null) {
+  public receivedInvitation = false;
+  public sentInvitation = false;
+  public isFriend = false;
+
+  private constructor(id: number, email: string, username?: string | null) {
     this.id = id;
     this.email = email;
     this.username = username;
@@ -32,12 +36,11 @@ export default class User {
   }
 
   static async make(
-    id: string,
+    id: number,
     email: string,
     username?: string | null
   ): Promise<User> {
     const user = new User(id, email, username);
-    await User.validate(user);
     return user;
   }
 
@@ -54,7 +57,11 @@ export default class User {
   }
 
   static async fromJson(json: any): Promise<User> {
-    return await User.make(json.id, json.email, json.username);
+    const user = await User.make(json.id, json.email, json.username);
+    user.receivedInvitation = json.received_invitation;
+    user.sentInvitation = json.sent_invitation;
+
+    return user;
   }
 }
 

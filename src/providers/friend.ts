@@ -12,4 +12,14 @@ export default class FriendProvider {
       throw error;
     }
   }
+
+  static async sendInvitation(user: User): Promise<void> {
+    try {
+      await axios.post('/users/' + user.id + '/invite');
+      user.receivedInvitation = true;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

@@ -13,7 +13,6 @@ const friends = ref([] as User[]);
 
 onMounted(async () => {
   friends.value = await FriendProvider.fetchFriends(props.userId);
-  console.log(friends.value);
 });
 </script>
 
