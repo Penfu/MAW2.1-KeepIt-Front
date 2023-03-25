@@ -7,6 +7,8 @@ import {
   IsEmail,
 } from 'class-validator';
 
+import Invitation from './invitation';
+
 export default class User {
   @IsDefined()
   @IsNotEmpty()
@@ -24,8 +26,8 @@ export default class User {
 
   private _avatar: string;
 
-  public receivedInvitation = false;
-  public sentInvitation = false;
+  public receivedInvitation?: Invitation;
+  public sentInvitation?: Invitation;
   public isFriend = false;
 
   private constructor(id: number, email: string, username?: string | null) {
@@ -35,12 +37,10 @@ export default class User {
     this._avatar = 'https://xsgames.co/randomusers/avatar.php?g=male';
   }
 
-  static async make(
-    id: number,
-    email: string,
-    username?: string | null
-  ): Promise<User> {
+  static make(id: number, email: string, username?: string | null): User {
     const user = new User(id, email, username);
+    User.validate(user);
+
     return user;
   }
 
@@ -56,10 +56,14 @@ export default class User {
     });
   }
 
-  static async fromJson(json: any): Promise<User> {
-    const user = await User.make(json.id, json.email, json.username);
-    user.receivedInvitation = json.received_invitation;
-    user.sentInvitation = json.sent_invitation;
+  static fromJson(json: any): User {
+    const user = User.make(json.id, json.email, json.username);
+
+    if (json.received_invitation)
+      user.receivedInvitation = Invitation.fromJson(json.received_invitation);
+
+    if (json.sent_invitation)
+      user.sentInvitation = Invitation.fromJson(json.sent_invitation);
 
     return user;
   }

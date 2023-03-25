@@ -88,6 +88,9 @@ const updateStepByTitle = (title: string) => {
             <!-- You sent this user a friend request -->
             <button
               v-else-if="user!.receivedInvitation"
+              @click="
+                async () => await FriendProvider.cancelInvitation(user! as User)
+              "
               class="btn flex items-center space-x-4"
             >
               <FriendIcon />
