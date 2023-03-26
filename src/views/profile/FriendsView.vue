@@ -1,48 +1,70 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-
 import type User from '@/models/user';
 
 import FriendProvider from '@/providers/friend';
 import type Invitation from '@/models/invitation';
+import { useQuery, useQueryClient } from '@tanstack/vue-query';
+
+const queryClient = useQueryClient();
 
 const props = defineProps<{
   userId: number;
 }>();
 
-const invitations = ref<Invitation[]>([]);
-const friends = ref<User[]>([]);
+const invitationsQuery = useQuery<Invitation[]>({
+  queryKey: ['invitations', props.userId],
+  queryFn: () => FriendProvider.fetchInvitations(props.userId),
+});
 
-onMounted(async () => {
-  invitations.value = await FriendProvider.fetchInvitations(props.userId);
-  friends.value = await FriendProvider.fetchFriends(props.userId);
+const friendsQuery = useQuery<User[]>({
+  queryKey: ['friends', props.userId],
+  queryFn: () => FriendProvider.fetchFriends(props.userId),
 });
 
 const handleAcceptInvitation = async (invitation: Invitation) => {
   try {
     await FriendProvider.acceptInvitation(invitation);
-    invitations.value = invitations.value.filter((i) => i.id !== invitation.id);
-    friends.value.push(invitation.author as User);
+    queryClient.setQueryData(
+      ['invitations', props.userId],
+      (oldData: Invitation[] | undefined) => {
+        if (!oldData) return [];
+        return oldData.filter((i: Invitation) => i.id !== invitation.id);
+      }
+    );
+    queryClient.setQueryData(['friends', props.userId], (oldData: any) => {
+      if (!oldData) return [];
+      return [...oldData, invitation.author];
+    });
   } catch (error) {
-    console.error(error);
+    invitationsQuery.refetch();
+    friendsQuery.refetch();
   }
 };
 
 const handleDeclineInvitation = async (invitation: Invitation) => {
   try {
     await FriendProvider.declineInvitation(invitation);
-    invitations.value = invitations.value.filter((i) => i.id !== invitation.id);
+    queryClient.setQueryData(
+      ['invitations', props.userId],
+      (oldData: Invitation[] | undefined) => {
+        if (!oldData) return [];
+        return oldData.filter((i: Invitation) => i.id !== invitation.id);
+      }
+    );
   } catch (error) {
-    console.error(error);
+    invitationsQuery.refetch();
   }
 };
 
 const handleRemoveFriend = async (friend: User) => {
   try {
     await FriendProvider.removeFriend(friend);
-    friends.value = friends.value.filter((f) => f.id !== friend.id);
+    queryClient.setQueryData(['friends', props.userId], (oldData: any) => {
+      if (!oldData) return [];
+      return oldData.filter((f: User) => f.id !== friend.id);
+    });
   } catch (error) {
-    console.error(error);
+    friendsQuery.refetch();
   }
 };
 </script>
@@ -52,9 +74,19 @@ const handleRemoveFriend = async (friend: User) => {
     <!-- Pending invitations -->
     <div class="space-y-4">
       <h2 class="text-2xl font-semibold text-gray-700">Pending invitations</h2>
-      <div class="flex">
+      <!-- Loading -->
+      <div
+        v-if="invitationsQuery.isLoading.value"
+        class="h-8 w-8 rounded-full border-b-2 border-cyan-800 animate-spin"
+      ></div>
+      <!-- Error -->
+      <div v-else-if="invitationsQuery.isError.value" class="text-gray-500">
+        Oops! Something went wrong.
+      </div>
+
+      <div class="flex" v-else>
         <div
-          v-for="invitation in (invitations as Invitation[])"
+          v-for="invitation in invitationsQuery.data.value"
           :key="invitation.id"
           class="px-4 py-2 flex items-center justify-between gap-8 bg-gray-100 rounded-lg shadow-md"
         >
@@ -77,7 +109,10 @@ const handleRemoveFriend = async (friend: User) => {
             </button>
           </div>
         </div>
-        <div v-if="invitations.length === 0" class="text-gray-500">
+        <div
+          v-if="invitationsQuery.data.value?.length === 0"
+          class="text-gray-500"
+        >
           No pending invitations
         </div>
       </div>
@@ -86,9 +121,19 @@ const handleRemoveFriend = async (friend: User) => {
     <!-- Friends -->
     <div class="space-y-4">
       <h2 class="text-2xl font-semibold text-gray-700">Friends</h2>
-      <div class="flex">
+      <!-- Loading -->
+      <div
+        v-if="friendsQuery.isLoading.value"
+        class="h-8 w-8 rounded-full border-b-2 border-cyan-800 animate-spin"
+      ></div>
+      <!-- Errors -->
+      <div v-else-if="friendsQuery.error.value" class="text-gray-500">
+        Oops! Something went wrong.
+      </div>
+
+      <div class="flex" v-else>
         <div
-          v-for="friend in (friends as User[])"
+          v-for="friend in friendsQuery.data.value"
           :key="friend.id"
           class="px-4 py-2 flex items-center justify-between gap-8 bg-gray-100 rounded-lg shadow-md"
         >

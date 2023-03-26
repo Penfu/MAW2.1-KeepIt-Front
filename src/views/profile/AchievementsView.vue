@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/vue-query';
 
 const props = defineProps({
   userId: {
-    type: String,
+    type: Number,
     required: true,
   },
 });
@@ -59,11 +59,6 @@ const paginate = async (newOffset: number) => {
       <div class="text-center">
         <p class="text-2xl font-bold">Oops!</p>
         <p class="text-xl">Something went wrong.</p>
-        <p class="text-xl">
-          {{
-            achievementsQuery.error.value || totalAchievementsQuery.error.value
-          }}
-        </p>
       </div>
     </div>
     <div v-else class="grid md:grid-cols-2 gap-4 flex">
