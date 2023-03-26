@@ -75,7 +75,7 @@ const updateStepByTitle = (title: string) => {
     >
       <div class="lg:w-2/4">
         <UserCard v-if="user" :user="user">
-          <ProfileEditView :id="id" />
+          <ProfileEditView :id="Number(id)" />
 
           <div v-if="canInvite" class="flex justify-end">
             <!-- This user sent you a friend request -->
@@ -170,7 +170,7 @@ const updateStepByTitle = (title: string) => {
 
     <!-- Selected tab content -->
     <keep-alive>
-      <component :is="steps[step].component" :userId="user?.id.toString()" />
+      <component :is="steps[step].component" :userId="Number(props?.id)" />
     </keep-alive>
   </main>
 </template>

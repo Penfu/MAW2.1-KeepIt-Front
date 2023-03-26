@@ -3,7 +3,7 @@ import type { AchievementsResponse } from '@/types/responses';
 import axios from 'axios';
 
 export default class AchievementProvider {
-  static async fetchCount(userId: string = ''): Promise<number> {
+  static async fetchCount(userId: Number): Promise<number> {
     try {
       const achievements = (
         await axios.get(`users/${userId}/achievements/count`)
@@ -16,9 +16,9 @@ export default class AchievementProvider {
   }
 
   static async fetchAchievements(
-    userId: string = '',
-    max: number = 10,
-    offset: number = 0
+    userId: number,
+    max: number = 4,
+    offset: number = 1
   ): Promise<AchievementsResponse> {
     try {
       const achievements = (
