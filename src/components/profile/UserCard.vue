@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import router from '@/router';
+
 import type User from '@/models/user';
 
 defineProps<{
@@ -8,20 +10,15 @@ defineProps<{
 
 <template>
   <div class="p-4 space-y-4 bg-white rounded-lg lg:shadow-lg shadow-gray-300">
-    <div class="flex flex-col md:flex-row items-center gap-4">
+    <div
+      @click="router.push({ name: 'profile', params: { id: user.id } })"
+      class="flex flex-col md:flex-row items-center gap-4"
+    >
       <img :src="user.avatar" class="w-32 rounded-lg shadow" />
 
-      <div>
+      <div class="overflow-ellipsis truncate">
         <h2 class="text-xl font-bold">{{ user.username }}</h2>
-        <RouterLink
-          :to="{
-            name: 'profile',
-            params: { id: user.id },
-          }"
-          class="font-medium text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out"
-        >
-          {{ user.email }}
-        </RouterLink>
+        <span class="font-medium">{{ user.email }}</span>
       </div>
     </div>
 

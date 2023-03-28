@@ -4,6 +4,7 @@ import {
   type NavigationGuardNext,
   type RouteLocationNormalized,
 } from 'vue-router';
+
 import NotFoundViewVue from '@/views/NotFoundView.vue';
 import LoginView from '@/views/authentication/LoginView.vue';
 import RegisterView from '@/views/authentication/RegisterView.vue';
@@ -12,7 +13,9 @@ import BooksView from '@/views/BooksView.vue';
 import BookView from '@/views/BookView.vue';
 import MovieView from '@/views/MovieView.vue';
 import MoviesView from '@/views/MoviesView.vue';
+import MembersView from '@/views/MembersView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+
 import middlewarePipeline from '@/middleware/middlewarePipeline';
 import guest from '@/middleware/guest';
 
@@ -80,6 +83,14 @@ const router = createRouter({
       name: 'movie',
       component: MovieView,
       props: true,
+    },
+    {
+      path: '/members',
+      name: 'members',
+      component: MembersView,
+      meta: {
+        inNavbar: true,
+      },
     },
   ],
 });

@@ -3,6 +3,16 @@ import axios from 'axios';
 import User from '@/models/user';
 
 export default class UserProvider {
+  static async fetchUsers(): Promise<User[]> {
+    try {
+      const users = (await axios.get('/users')).data;
+      return users.data.items.map((user: any) => User.fromJson(user));
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   static async fetchUser(id: number): Promise<User> {
     try {
       const user = (await axios.get('/users/' + id)).data;

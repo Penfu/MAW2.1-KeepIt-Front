@@ -34,7 +34,7 @@ export default class User {
     this.id = id;
     this.email = email;
     this.username = username;
-    this._avatar = 'https://xsgames.co/randomusers/avatar.php?g=male';
+    this._avatar = `https://avatars.dicebear.com/api/initials/${this.username}.svg`;
   }
 
   static make(id: number, email: string, username?: string | null): User {
