@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { useQuery, useQueryClient } from '@tanstack/vue-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { useAuthStore } from '@/stores/auth';
-
 import type User from '@/models/user';
-
 import FriendProvider from '@/providers/friend';
-
 import FriendRequestsView from './FriendRequestsView.vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
   userId: number;
@@ -14,22 +12,41 @@ const props = defineProps<{
 
 const auth = useAuthStore();
 const queryClient = useQueryClient();
+const userId = ref(props.userId);
+
+// Remove cache when profile switch
+watch(
+  () => props.userId,
+  (newId) => {
+    if (props.userId == userId.value) return;
+    queryClient.invalidateQueries({
+      queryKey: ['friends', userId],
+    });
+    userId.value = newId;
+  },
+  { immediate: true }
+);
 
 const friendsQuery = useQuery<User[]>({
   queryKey: ['friends', props.userId],
   queryFn: () => FriendProvider.fetchFriends(props.userId),
 });
 
+const setFriends = (friend: User) => {
+  queryClient.setQueryData(['friends', props.userId], (oldData: any) => {
+    if (!oldData) return [];
+    return oldData.filter((f: User) => f.id !== friend.id);
+  });
+};
+
+const { isLoading, mutate: removeFriend } = useMutation({
+  mutationFn: async (friend: User) => await FriendProvider.removeFriend(friend),
+  onError: () => friendsQuery.refetch(),
+});
+
 const handleRemoveFriend = async (friend: User) => {
-  try {
-    await FriendProvider.removeFriend(friend);
-    queryClient.setQueryData(['friends', props.userId], (oldData: any) => {
-      if (!oldData) return [];
-      return oldData.filter((f: User) => f.id !== friend.id);
-    });
-  } catch (error) {
-    friendsQuery.refetch();
-  }
+  removeFriend(friend);
+  setFriends(friend);
 };
 </script>
 
@@ -69,8 +86,34 @@ const handleRemoveFriend = async (friend: User) => {
               {{ friend?.username }}
             </h2>
           </div>
-          <button @click="handleRemoveFriend(friend)" class="btn">
+          <button
+            v-if="auth.user?.id == userId"
+            @click="handleRemoveFriend(friend)"
+            class="btn"
+          >
             Remove
+            <!-- Spinner -->
+            <svg
+              v-if="isLoading"
+              class="animate-spin h-5 w-5 ml-3 -mr-1 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              ></path>
+            </svg>
           </button>
         </div>
         <div v-if="friendsQuery.data.value?.length === 0" class="text-gray-500">

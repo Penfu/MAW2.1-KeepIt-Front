@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { useQuery, useQueryClient } from '@tanstack/vue-query';
-
 import type Invitation from '@/models/invitation';
-
 import FriendProvider from '@/providers/friend';
-
+import { ref, watch } from 'vue';
 const queryClient = useQueryClient();
 
 const props = defineProps<{
   userId: number;
 }>();
+
+const userId = ref(props.userId);
+
+// watch();
 
 const invitationsQuery = useQuery<Invitation[]>({
   queryKey: ['invitations', props.userId],

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useQuery, useQueryClient } from '@tanstack/vue-query';
 import AchievementProvider from '@/providers/achievement';
 import AchievementCard from '@/components/profile/AchievementCard.vue';
 import ThePagination from '@/components/ThePagination.vue';
-import { useQuery } from '@tanstack/vue-query';
+
+const queryClient = useQueryClient();
 
 const props = defineProps({
   userId: {
@@ -12,8 +14,25 @@ const props = defineProps({
   },
 });
 
+const userId = ref(props.userId);
 const offset = ref(1);
 const max = ref(8);
+
+// Remove query cache when switch profile
+watch(
+  () => props.userId,
+  (newId) => {
+    queryClient.invalidateQueries({
+      queryKey: ['achievements', offset, userId.value],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['achievements-count', userId.value],
+    });
+    userId.value = newId;
+  },
+  { immediate: true }
+);
+
 const isLoading = computed(() => {
   return (
     achievementsQuery.isLoading.value || totalAchievementsQuery.isLoading.value
@@ -31,13 +50,13 @@ const achievementsFetcher = (offset: number) =>
   );
 
 const achievementsQuery = useQuery({
-  queryKey: ['achievements', offset],
+  queryKey: ['achievements', offset, userId.value],
   queryFn: () => achievementsFetcher(offset.value),
   keepPreviousData: true,
 });
 
 const totalAchievementsQuery = useQuery({
-  queryKey: ['achievements-count', props.userId],
+  queryKey: ['achievements-count', userId.value],
   queryFn: () => AchievementProvider.fetchCount(props.userId),
 });
 
