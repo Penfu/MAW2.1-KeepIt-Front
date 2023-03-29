@@ -34,5 +34,41 @@ export default class MovieProvider {
           throw error;
         }
       }
+
+      static async upVote(id: string = ''): Promise<void> {
+        try {
+          await axios.put(`/movies/${id}/upvote`, {});
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      }
+    
+      static async downVote(id: string = ''): Promise<void> {
+        try {
+          await axios.put(`/movies/${id}/downvote`, {});
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      }
+    
+      static async unVote(id: string = ''): Promise<void> {
+        try {
+          await axios.delete(`/movies/${id}/unvote`);
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      }
+    
+      static async track(id: string = '', time: number): Promise<void> {
+        try {
+          await axios.put(`/movies/${id}/track`, { time });
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      }
     }
     
