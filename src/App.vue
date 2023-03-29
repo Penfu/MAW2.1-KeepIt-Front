@@ -47,26 +47,38 @@ const auth = useAuthStore();
               </template>
               <template #content>
                 <div
-                  class="absolute z-20 w-44 right-0 mt-2 p-2 bg-white rounded-lg border border-gray-200 shadow-md"
+                  class="absolute z-20 w-44 right-0 mt-2 bg-white rounded-lg border border-gray-200 shadow-md"
                 >
-                  <div class="space-y-4">
+                  <div class="px-4 py-2 hover:bg-gray-100">
                     <RouterLink
                       v-if="auth.user?.id"
                       :to="{
                         name: 'profile',
                         params: { id: auth.user?.id },
                       }"
-                      class="text-lg font-semibold"
+                      class="hover:bg-gray-100"
                     >
-                      {{ auth.user?.username }}
+                      <span class="block text-sm">{{
+                        auth.user.username
+                      }}</span>
+                      <span
+                        class="block text-sm font-medium text-gray-900 truncate"
+                        >{{ auth?.user?.email }}</span
+                      >
                     </RouterLink>
-                    <button
-                      @click="auth.logout()"
-                      class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Logout
-                    </button>
                   </div>
+                  <hr class="border-gray-200" />
+                  <ul class="py-1" aria-labelledby="dropdown">
+                    <li>
+                      <button
+                        href="#"
+                        @click="auth.logout()"
+                        class="w-full text-left text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2"
+                      >
+                        Sign out
+                      </button>
+                    </li>
+                  </ul>
                 </div>
               </template>
             </Dropdown>
