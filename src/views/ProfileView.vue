@@ -10,12 +10,10 @@ import UserProvider from '@/providers/user';
 import FriendProvider from '@/providers/friend';
 import AchievementProvider from '@/providers/achievement';
 
-import Activities from '@/views/profile/ActivitiesView.vue';
 import Friends from '@/views/profile/FriendsView.vue';
 import Achievements from '@/views/profile/AchievementsView.vue';
 import ProfileEditView from '@/views/profile/ProfileEditView.vue';
 
-import ActivityIcon from '@/components/icons/ActivityIcon.vue';
 import FriendIcon from '@/components/icons/FriendIcon.vue';
 import AchievementCard from '@/components/profile/AchievementCard.vue';
 import AchievementIcon from '@/components/icons/AchievementIcon.vue';
@@ -52,7 +50,6 @@ watch(
 const step = ref(0);
 
 const steps = [
-  { component: Activities, title: 'Activities', icon: ActivityIcon },
   { component: Friends, title: 'Friends', icon: FriendIcon },
   { component: Achievements, title: 'Achievements', icon: AchievementIcon },
 ];
