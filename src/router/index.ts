@@ -30,6 +30,7 @@ const router = createRouter({
   routes: [
     {
       path: '/:pathMatch(.*)*',
+      name: 'not-found',
       component: NotFoundViewVue,
     },
     {

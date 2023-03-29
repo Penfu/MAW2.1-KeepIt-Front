@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import router from '@/router';
 
 import type User from '@/models/user';
 import type Achievement from '@/models/achievement';
@@ -18,9 +19,10 @@ import FriendIcon from '@/components/icons/FriendIcon.vue';
 import AchievementCard from '@/components/profile/AchievementCard.vue';
 import AchievementIcon from '@/components/icons/AchievementIcon.vue';
 import UserCard from '@/components/profile/UserCard.vue';
+import NotFoundException from '@/exceptions/notFoundException';
 
 const props = defineProps<{
-  id: number;
+  id: string;
 }>();
 
 const auth = useAuthStore();
@@ -39,7 +41,14 @@ const canInvite = computed(() => {
 watch(
   () => props.id,
   async (newId) => {
-    user.value = await UserProvider.fetchUser(newId);
+    try {
+      user.value = await UserProvider.fetchUser(newId);
+    } catch (e) {
+      if (e instanceof NotFoundException) {
+        router.push({ name: 'not-found' });
+      }
+    }
+
     achievements.value = (
       await AchievementProvider.fetchAchievements(newId, 4, 1)
     ).items;
@@ -72,7 +81,7 @@ const updateStepByTitle = (title: string) => {
     >
       <div class="lg:w-2/4">
         <UserCard v-if="user" :user="user">
-          <ProfileEditView :id="Number(id)" />
+          <ProfileEditView :id="id" />
 
           <div v-if="canInvite" class="flex justify-end">
             <!-- This user sent you a friend request -->

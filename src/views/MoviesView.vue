@@ -29,10 +29,7 @@ const infiniteScroll = async () => {
 
   console.log('Fetching more movies... Offset: ' + page.value);
   page.value += 1;
-  const newmovies = await MovieProvider.fetchMovies(
-    search.value,
-    page.value
-  );
+  const newmovies = await MovieProvider.fetchMovies(search.value, page.value);
   movies.value.push(...newmovies);
 
   hasMore.value = newmovies.length > 0;

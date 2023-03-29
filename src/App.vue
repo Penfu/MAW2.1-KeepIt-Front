@@ -14,10 +14,8 @@ const auth = useAuthStore();
 
 <template>
   <div class="max-h-screen">
-    <header class="outline outline-b-2 outline-gray-100 shadow-sm">
-      <nav
-        class="mx-4 md:mx-12 xl:mx-auto max-w-6xl h-navbar flex items-center"
-      >
+    <header class="px-8 outline outline-b-2 outline-gray-100 shadow-sm">
+      <nav class="mx-auto max-w-7xl h-navbar flex items-center">
         <RouterLink to="/" class="text-xl font-semibold">Keep It</RouterLink>
 
         <div class="grow">
@@ -114,8 +112,6 @@ const auth = useAuthStore();
                     </RouterLink>
                   </div>
 
-                  <span class="mx-2 block border-t-2 border-gray-400"></span>
-
                   <!-- User Actions -->
                   <div class="mx-2 flex flex-col gap-8">
                     <div
@@ -159,6 +155,9 @@ const auth = useAuthStore();
         </div>
       </nav>
     </header>
-    <RouterView class="mx-4 md:mx-12 xl:mx-auto max-w-6xl" />
+
+    <main class="mx-8">
+      <RouterView class="mx-auto max-w-7xl" />
+    </main>
   </div>
 </template>

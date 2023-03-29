@@ -13,7 +13,7 @@ import UserProvider from '@/providers/user';
 
 import ErrorAlert from '@/components/ErrorAlert.vue';
 
-const props = defineProps<{ id: number }>();
+const props = defineProps<{ id: string }>();
 
 const user = ref<User | null>(null);
 const isLoading = ref<boolean>(false);
