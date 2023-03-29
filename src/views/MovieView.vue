@@ -11,7 +11,7 @@ const isLoading = ref(true);
 
 const voteRatio = computed(() =>
   Math.round(
-    //(movie.value.upvotes / (movie.value.upvotes + movie.value.downvotes)) * 100
+    (movie.value.upvotes / (movie.value.upvotes + movie.value.downvotes)) * 100
   )
 );
 
@@ -20,6 +20,44 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
+const handleUpVote = () => {
+  if (movie.value.userVote === 1) {
+    handleUnVote();
+    movie.value.upvotes--;
+    return;
+  }
+
+  MovieProvider.upVote(props.id);
+  movie.value.upvotes++;
+
+  if (movie.value.userVote === -1) {
+    movie.value.downvotes--;
+  }
+
+  movie.value.userVote = 1;
+};
+
+const handleDownVote = () => {
+  if (movie.value.userVote === -1) {
+    handleUnVote();
+    movie.value.downvotes--;
+    return;
+  }
+
+  MovieProvider.downVote(props.id);
+  movie.value.downvotes++;
+
+  if (movie.value.userVote === 1) {
+    movie.value.upvotes--;
+  }
+
+  movie.value.userVote = -1;
+};
+
+const handleUnVote = () => {
+  MovieProvider.unVote(props.id);
+  movie.value.userVote = 0;
+};
 </script>
 
 <template>

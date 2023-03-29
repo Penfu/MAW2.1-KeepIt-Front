@@ -15,6 +15,8 @@ export default class Movie extends Media {
     public productionCompanies: string[];
     public tagline: string;
 
+    public userVote: number = 0;
+    public userTime: number = 0;
 
     constructor(
         _id: string,
@@ -44,6 +46,8 @@ export default class Movie extends Media {
         movie.genres = json.genres;
         movie.productionCompanies = json.production_companies;
         movie.tagline = json.tagline;
+        movie.userVote = json.user_vote;
+        movie.userTime = json.user_time;
 
         return movie;
     }
