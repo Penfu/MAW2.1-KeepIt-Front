@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import debounce from 'debounce';
 
 import type Movie from '@/models/movie';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/vue';
 
 import MovieProvider from '@/providers/movie';
 
@@ -62,7 +63,6 @@ const handleUnVote = () => {
 };
 
 const watchingProgress = computed(() => {
-  console.log(movie.value.userTime)
   return Math.round((movie.value.userTime / movie.value.runtime) * 100);
 });
 

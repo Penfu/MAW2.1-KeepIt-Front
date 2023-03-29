@@ -6,7 +6,6 @@ export default class MovieProvider {
     static async fetchMovie(id: string): Promise<Movie> {
         try {
           const movie = (await axios.get('/movies/' + id)).data;
-          console.log(movie);
           return Movie.fromJson(movie.data.item);
         } catch (error) {
           console.error(error);
