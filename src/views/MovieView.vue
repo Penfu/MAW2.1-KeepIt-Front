@@ -60,7 +60,7 @@ const handleUnVote = () => {
 };
 
 const watchingProgress = computed(() => {
-  console.log(movie.value.userTime, movie.value.runtime);
+  console.log(movie.value.userTime)
   return Math.round((movie.value.userTime / movie.value.runtime) * 100);
 });
 

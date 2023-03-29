@@ -48,7 +48,7 @@ export default class Movie extends Media {
         movie.productionCompanies = json.production_companies;
         movie.tagline = json.tagline;
         movie.userVote = json.user_vote;
-        movie.userTime = json.user_time;
+        movie.userTime = json.user_time != undefined ? json.user_time : 0;
         movie.runtime = json.runtime;
 
         return movie;
