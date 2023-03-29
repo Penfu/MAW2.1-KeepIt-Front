@@ -28,7 +28,6 @@ export default class MovieProvider {
                   '/movies/search?q=' + title /*+ '&max=' + max + '&offset=' + offset*/
                 )
               ).data;
-          console.log(movies);
           return movies.data.results.map((movie: JSON) => Movie.fromJson(movie));
         } catch (error) {
           console.error(error);

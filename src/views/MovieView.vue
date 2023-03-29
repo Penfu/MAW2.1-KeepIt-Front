@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import debounce from 'debounce';
-import MovieProvider from '@/providers/movie';
+
 import type Movie from '@/models/movie';
+
+import MovieProvider from '@/providers/movie';
 
 const props = defineProps<{ id: string }>();
 
@@ -91,12 +93,12 @@ const debouncedUserTimeTracking = debounce(async function () {
         <div class="flex flex-col md:flex-row gap-8">
           <!-- poster -->
           <div class="w-64 md:w-32">
-            <img :src="movie.poster" alt="Movie poster" class="rounded" />
+            <img :src="movie.cover" alt="Movie poster" class="rounded" />
           </div>
 
           <!-- Title, productionCompanies, releaseDate ,genre -->
           <div class="flex flex-col justify-between space-y-2">
-            <div class="">
+            <div>
               <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{ movie.title }}</h1>
               <p class="text-sm text-gray-500">{{ movie.title !== movie.originalTitle && movie.originalTitle ?
                 `${movie.originalTitle}` : '' }}</p>

@@ -14,7 +14,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main>
+  <div>
     <div class="py-32 flex flex-col justify-center items-center space-y-12">
       <div
         class="h-32 text-center md:text-left flex flex-col space-y-4 text-3xl font-semibold"
@@ -26,5 +26,5 @@ onMounted(async () => {
       <BookCard v-if="book.id" :media="(book as Book)" />
       <div v-else class="h-80 w-56 bg-gray-100 rounded-xl animate-pulse"></div>
     </div>
-  </main>
+  </div>
 </template>

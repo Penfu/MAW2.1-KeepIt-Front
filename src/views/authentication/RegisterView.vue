@@ -54,7 +54,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <main class="py-16 space-y-12">
+  <div class="py-16 space-y-12">
     <h2 class="text-3xl font-semibold uppercase text-center">Register</h2>
 
     <form
@@ -158,5 +158,5 @@ const onSubmit = async () => {
     >
       Already registered ?
     </router-link>
-  </main>
+  </div>
 </template>

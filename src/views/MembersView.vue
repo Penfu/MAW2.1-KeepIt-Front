@@ -15,8 +15,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="py-8 space-y-8">
-    <h1 class="text-4xl font-bold text-gray-800">Members</h1>
+  <div class="container space-y-8">
+    <h>Members</h>
     <div v-if="users.length !== 0">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <UserCard
@@ -27,5 +27,5 @@ onMounted(async () => {
         />
       </div>
     </div>
-  </main>
+  </div>
 </template>

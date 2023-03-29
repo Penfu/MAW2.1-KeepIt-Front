@@ -74,7 +74,7 @@ const updateStepByTitle = (title: string) => {
 </script>
 
 <template>
-  <main class="py-8 space-y-12">
+  <div class="container space-y-12">
     <div
       v-if="!isUserLoading"
       class="flex flex-col lg:flex-row justify-between lg:items-start items-center gap-8"
@@ -178,5 +178,5 @@ const updateStepByTitle = (title: string) => {
     <keep-alive>
       <component :is="steps[step].component" :userId="Number(props?.id)" />
     </keep-alive>
-  </main>
+  </div>
 </template>

@@ -42,14 +42,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main
+  <div
     style="max-height: calc(100vh - 56px)"
-    class="h-screen flex flex-col gap-4"
+    class="container h-screen flex flex-col gap-4"
   >
-    <div class="flex items-center">
-      <div class="grow">
-        <h1 class="text-xl font-semibold">Movies</h1>
-      </div>
+    <div class="flex justify-between">
+      <h1>Movies</h1>
 
       <!-- Search bar -->
       <div class="m-2 flex items-center bg-gray-100 rounded shadow drop-shadow">
@@ -69,5 +67,5 @@ onMounted(async () => {
       :medias="(movies as Movie[])"
       :mediaCard="MovieCard"
     />
-  </main>
+  </div>
 </template>
