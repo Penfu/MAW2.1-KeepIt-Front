@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/auth';
 
 import ErrorAlert from '@/components/ErrorAlert.vue';
 import type { AuthError } from '@/types/Errors';
+import { useMutation } from '@tanstack/vue-query';
 
 const auth = useAuthStore();
 const authErrors = ref<AuthError[]>([]);
@@ -25,21 +26,22 @@ const rules = {
 
 const v$ = useVuelidate(rules, formData);
 
+const { isLoading, mutate: loginUser } = useMutation({
+  mutationFn: () => auth.login(formData.email, formData.password),
+  onSuccess: () => {
+    router.push({ name: 'home' });
+  },
+  onError: (error: any) => {
+    authErrors.value = [{ $message: error.response.data['field-error'][1] }];
+  },
+});
+
 const onSubmit = async () => {
   const result = await v$.value.$validate();
   authErrors.value = [];
-  if (!result) {
-    return;
-  }
+  if (!result) return;
 
-  await auth
-    .login(formData.email, formData.password)
-    .then(() => {
-      router.push({ name: 'home' });
-    })
-    .catch((error) => {
-      authErrors.value = [{ $message: error.response.data['field-error'][1] }];
-    });
+  loginUser();
 };
 </script>
 
@@ -81,9 +83,32 @@ const onSubmit = async () => {
 
       <button
         type="submit"
-        class="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded text-lg"
+        class="w-full px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded text-lg flex justify-center items-center"
       >
         Login
+
+        <!-- Spinner -->
+        <svg
+          v-if="isLoading"
+          class="animate-spin h-5 w-5 ml-3 -mr-1 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            class="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            stroke-width="4"
+          ></circle>
+          <path
+            class="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          ></path>
+        </svg>
       </button>
     </form>
 

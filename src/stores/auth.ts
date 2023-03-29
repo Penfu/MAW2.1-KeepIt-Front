@@ -61,11 +61,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function register(
+    username: string,
     email: string,
     password: string,
     password_confirm: string
   ): Promise<void> {
     const response = await axios.post('/register', {
+      username: username,
       login: email,
       password: password,
       'password-confirm': password_confirm,
