@@ -14,6 +14,7 @@ export default class Movie extends Media {
     public genres: string[];
     public productionCompanies: string[];
     public tagline: string;
+    public runtime: number;
 
     public userVote: number = 0;
     public userTime: number = 0;
@@ -48,6 +49,7 @@ export default class Movie extends Media {
         movie.tagline = json.tagline;
         movie.userVote = json.user_vote;
         movie.userTime = json.user_time;
+        movie.runtime = json.runtime;
 
         return movie;
     }

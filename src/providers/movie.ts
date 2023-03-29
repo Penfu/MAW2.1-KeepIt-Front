@@ -62,9 +62,9 @@ export default class MovieProvider {
         }
       }
     
-      static async track(id: string = '', page: number): Promise<void> {
+      static async track(id: string = '', time: number): Promise<void> {
         try {
-          await axios.put(`/movies/${id}/track`, { page });
+          await axios.put(`/movies/${id}/track`, { time });
         } catch (error) {
           console.error(error);
           throw error;
