@@ -12,36 +12,23 @@ export default class Book extends Media {
 
   constructor(
     _id: string,
+    _title: string,
+    _cover: string,
+    _publishAt: string,
     _upvotes: number,
-    _downvotes: number,
-
-    private _title: string,
-    private _cover: string,
-    private _publishedAt: string
+    _downvotes: number
   ) {
-    super(_id, _upvotes, _downvotes);
-  }
-
-  get title(): string {
-    return this._title;
-  }
-
-  get cover(): string {
-    return this._cover;
-  }
-
-  get publishedAt(): string {
-    return this._publishedAt;
+    super(_id, _title, _cover, _publishAt, _upvotes, _downvotes);
   }
 
   static fromJson(json: any): Book {
     const book = new Book(
       json.id,
-      json.upvotes,
-      json.downvotes,
       json.title,
       json.cover,
-      json.published_at
+      json.published_at,
+      json.upvotes,
+      json.downvotes
     );
 
     book.subjects = json.subjects;

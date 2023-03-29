@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
-import type Book from '@/models/book';
+
+import type Media from '@/models/media';
 
 const props = defineProps<{
-  media: Book;
+  media: Media;
 }>();
 
 const voteRatio = computed(
@@ -15,14 +16,14 @@ const voteRatio = computed(
 );
 
 const readableUpvotes = computed(() =>
-  props.media.upvotes.toLocaleString('en-US', {
+  props.media.upvotes?.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
 );
 
 const readableDownvotes = computed(() =>
-  props.media.downvotes.toLocaleString('en-US', {
+  props.media.downvotes?.toLocaleString('en-US', {
     notation: 'compact',
     compactDisplay: 'short',
   })
@@ -39,7 +40,7 @@ const releaseDate = computed(() =>
 
 <template>
   <RouterLink
-    :to="'/books/' + media.id"
+    :to="`/${media.constructor.name}s/${media.id}`"
     class="flex md:flex-col h-20 md:h-80 w-full md:w-56 bg-gray-100 rounded-lg overflow-hidden shadow drop-shadow-lg hover:cursor-pointer hover:scale-105 transition ease-in-out"
   >
     <!-- Cover -->
