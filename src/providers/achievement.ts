@@ -16,7 +16,7 @@ export default class AchievementProvider {
   }
 
   static async fetchAchievements(
-    userId: number,
+    userId: string,
     max: number = 4,
     offset: number = 1
   ): Promise<AchievementsResponse> {

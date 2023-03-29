@@ -81,7 +81,7 @@ const debouncedUserPageTracking = debounce(async function () {
 </script>
 
 <template>
-  <main class="my-12">
+  <div class="container">
     <div v-if="isLoading" class="flex justify-center items-center">
       <div
         class="animate-spin rounded-full h-32 w-32 border-b-2 border-cyan-800"
@@ -246,5 +246,5 @@ const debouncedUserPageTracking = debounce(async function () {
         </DialogPanel>
       </div>
     </Dialog>
-  </main>
+  </div>
 </template>

@@ -45,25 +45,21 @@ const onScroll = async () => {
 </script>
 
 <template>
-  <main
+  <div
     style="max-height: calc(100vh - var(--h-navbar))"
-    class="pt-8 h-screen flex flex-col gap-4"
+    class="container h-screen flex flex-col gap-4"
   >
-    <div class="flex items-center">
-      <div class="grow">
-        <h1 class="text-xl font-semibold">Books</h1>
-      </div>
+    <div class="flex justify-between">
+      <h1>Books</h1>
 
       <!-- Search bar -->
-      <div class="m-2 flex items-center bg-gray-100 rounded shadow">
-        <input
-          v-model="search"
-          v-on:input="debouncedSearch"
-          type="text"
-          class="grow py-3 px-4 rounded-lg outline-none text-lg"
-          placeholder="Search for a book..."
-        />
-      </div>
+      <input
+        v-model="search"
+        v-on:input="debouncedSearch"
+        type="text"
+        class="py-3 px-2 sm:px-4 rounded-lg text-lg border-2 border-gray-300"
+        placeholder="Search for a book..."
+      />
     </div>
 
     <!-- Book cards -->
@@ -72,5 +68,5 @@ const onScroll = async () => {
       :medias="(books as Book[])"
       :mediaCard="BookCard"
     />
-  </main>
+  </div>
 </template>

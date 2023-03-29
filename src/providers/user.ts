@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import User from '@/models/user';
+import NotFoundException from '@/exceptions/notFoundException';
 
 export default class UserProvider {
   static async fetchUsers(): Promise<User[]> {
@@ -13,12 +14,17 @@ export default class UserProvider {
     }
   }
 
-  static async fetchUser(id: number): Promise<User> {
+  static async fetchUser(id: string): Promise<User> {
     try {
       const user = (await axios.get('/users/' + id)).data;
       return User.fromJson(user.data.item);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+
+      if (error.response.status === 404) {
+        throw new NotFoundException('User not found');
+      }
+
       throw error;
     }
   }

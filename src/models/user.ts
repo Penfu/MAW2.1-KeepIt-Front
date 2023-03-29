@@ -12,7 +12,7 @@ import Invitation from './invitation';
 export default class User {
   @IsDefined()
   @IsNotEmpty()
-  readonly id: number;
+  readonly id: string;
 
   @IsString()
   @IsEmail()
@@ -30,14 +30,14 @@ export default class User {
   public sentInvitation?: Invitation;
   public friendship?: Invitation;
 
-  private constructor(id: number, email: string, username?: string | null) {
+  private constructor(id: string, email: string, username?: string | null) {
     this.id = id;
     this.email = email;
     this.username = username;
     this._avatar = `https://avatars.dicebear.com/api/initials/${this.username}.svg`;
   }
 
-  static make(id: number, email: string, username?: string | null): User {
+  static make(id: string, email: string, username?: string | null): User {
     const user = new User(id, email, username);
     User.validate(user);
 

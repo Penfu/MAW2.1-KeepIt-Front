@@ -19,13 +19,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main>
+  <div class="container">
     <!-- Discover Books -->
     <div class="space-y-8">
-      <h1 class="text-4xl font-bold text-gray-800">Discover Books</h1>
+      <h1>Discover Books</h1>
       <div
         v-if="books.length !== 0"
-        class="flex justify-center items-center gap-4"
+        class="flex flex-col md:flex-row justify-center items-center gap-4"
       >
         <DynamicBookCard
           v-for="book in books"
@@ -35,5 +35,5 @@ onMounted(async () => {
       </div>
     </div>
     <!-- Discover Movies -->
-  </main>
+  </div>
 </template>

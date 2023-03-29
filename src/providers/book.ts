@@ -1,5 +1,6 @@
-import Book from '@/models/book';
 import axios from 'axios';
+
+import Book from '@/models/book';
 
 export default class BookProvider {
   static async fetchBook(id: string): Promise<Book> {
