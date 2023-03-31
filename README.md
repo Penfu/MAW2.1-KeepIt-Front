@@ -5,7 +5,6 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#configuration">Configuration</a></li>
-    <li><a href="#tests">Tests</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -56,14 +55,6 @@ npm run dev
 
 ```sh
 npm run build
-```
-
-## Tests
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
